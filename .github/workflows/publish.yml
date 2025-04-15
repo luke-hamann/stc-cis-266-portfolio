@@ -24,7 +24,9 @@ jobs:
         run: sudo apt install -y tidy
 
       - name: Build Website
-        run: ./build.sh
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
             
       - name: Upload Website
         uses: actions/upload-pages-artifact@v3
