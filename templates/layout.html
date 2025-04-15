@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-us" class="scroll-behavior-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$title$</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div>
+
+$if(homepage)$
+<div class="bg-devils-tower min-height-100vh bg-cover">
+$endif$
+
+<header>
+    <nav class="display-flex justify-content-center">
+        <input type="checkbox" id="5a8347dd-7d95-4af5-9c80-1d4de234ba41" class="display-none">
+        <label for="5a8347dd-7d95-4af5-9c80-1d4de234ba41" class="padding-3rem">
+            &equiv;
+        </label>
+        <ul class="display-flex list-style-type-none media-max-width-50rem-flex-direction-column">
+            <li class="padding-3rem text-align-center">
+                <a href="." class="color-blue hover-text-decoration-underline white-space-nowrap">
+                    Home
+                </a>
+            </li>
+            <li class="padding-3rem text-align-center">
+                <a href="CIS_Syllabi.html" class="color-blue hover-text-decoration-underline white-space-nowrap">
+                    CIS Syllabi
+                </a>
+            </li>
+            <li class="padding-3rem text-align-center">
+                <a href="projects.html" class="color-blue hover-text-decoration-underline white-space-nowrap">
+                    Projects
+                </a>
+            </li>
+            <li class="padding-3rem text-align-center">
+                <a href="LukeHamannResume.pdf" class="color-blue hover-text-decoration-underline white-space-nowrap">
+                    Resume.pdf
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <h1 class="font-size-4rem font-weight-bold text-align-center">$title$</h1>
+</header>
+$if(homepage)$
+</div>
+$endif$
+<main class="margin-top-3rem">
+$body$
+</main>
+<footer class="margin-0-auto text-align-center padding-5rem">
+    &copy; 2025 Luke Hamann
+</footer>
+</div>
+</body>
+</html>

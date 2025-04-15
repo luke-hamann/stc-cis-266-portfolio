@@ -1,0 +1,50 @@
+name: Publish Website
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+    name: Build Website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Checkout Repository LFS
+        run: git lfs checkout
+
+      - name: Install pandoc
+        uses: pandoc/actions/setup@v1
+
+      - name: Install tidy
+        run: sudo apt install -y tidy
+
+      - name: Build Website
+        run: ./build.sh
+            
+      - name: Upload Website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+    
+  deploy:
+    name: Deploy Website
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      pages: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
