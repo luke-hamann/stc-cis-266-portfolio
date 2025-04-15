@@ -7,8 +7,8 @@ title: Projects
 
 ## Product Manager JavaFX App
 
-![](https://placehold.co/600x400)
+![The main page of the product manager](https://placehold.co/600x400)
 
 ## Technical Support Website ASP.NET Core MVC App
 
-![](https://placehold.co/600x400)
+![The customer add form with validation errors](https://placehold.co/600x400)
