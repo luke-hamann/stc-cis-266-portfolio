@@ -1,0 +1,44 @@
+name: Publish Website
+on:
+    push:
+        branches: master
+
+jobs:
+    build:
+        name: Build Website
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+        
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  lfs: true
+            
+            - name: Checkout LFS objects
+              run: git lfs checkout
+            
+            - name: Upload Website
+              uses: actions/upload-pages-artifact@v3
+              with:
+                path: .
+    
+    deploy:
+        name: Deploy Website
+        needs: build
+        runs-on: ubuntu-latest
+
+        permissions:
+            id-token: write
+            pages: write
+      
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+      
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
