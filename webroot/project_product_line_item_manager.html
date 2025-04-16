@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Line Item Manager</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <a href=".">Home</a>
+                </li>
+                <li class="header-li">
+                    <a href="CIS_Syllabi.html">CIS Syllabi</a>
+                </li>
+                <li class="header-li">
+                    <a href="LukeHamannResume.pdf">Resume.pdf</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cis-syllabi">
+        <h1>Product Line Item Manager</h1>
+        <p>
+            This is a Java desktop application for managing a database of products and line items.
+            It provides all CRUD functionality for both products and line items as well as a search capability.
+            Data is stored in a SQLite database.
+            This application was written as a bonus assignment for an advanced level Java class.
+        </p>
+        <p>
+            I developed this application individually after watching and "cloning" a user interface demonstration of a potential solution provided by our professor.
+        </p>
+        <p>
+            The technologies include:
+        </p>
+        <ul>
+            <li>Java</li>
+            <li>JavaFX</li>
+            <li>SQLite</li>
+        </ul>
+        <figure>
+            <img src="images/product_line_main.png">
+            <figcaption class="center">The main view that provides buttons to access all of its CRUD functions</figcaption>
+        </figure>
+        <figure>
+            <img src="images/product_line_update.png">
+            <figcaption class="center">The update product view</figcaption>
+        </figure>
+        <figure>
+            <img src="images/product_line_line_item_add.png">
+            <figcaption class="center">The view that allows a user to add a line item on a product</figcaption>
+        </figure>
+        <figure>
+            <img src="images/product_line_search.png">
+            <figcaption class="center">The main view after the user has entered search criteria to filter the products and line items</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>public static ArrayList&lt;Object&gt; searchProducts(
+    String searchCode, String searchDescription, String searchPrice) {
+    String sql = """
+            WITH ValidCodes AS (
+                SELECT ProductCode
+                FROM Products
+                WHERE ProductCode LIKE ? AND
+                    Description LIKE ? ESCAPE '~' AND
+                    CAST(Price AS TEXT) LIKE ?
+            )
+            SELECT ProductCode,
+                0 Type,
+                Description,
+                Price,
+                NULL LineItemID,
+                NULL InvoiceID,
+                NULL Quantity
+            FROM Products
+            WHERE ProductCode IN ValidCodes
+            UNION
+            SELECT ProductCode,
+                1,
+                NULL,
+                NULL,
+                LineItemID,
+                InvoiceID,
+                Quantity
+            FROM LineItems
+            WHERE ProductCode IN ValidCodes
+            ORDER BY ProductCode, Type, LineItemID;
+            """;
+
+    try (Connection connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);) {
+        ps.setString(1, "%" + searchCode + "%");
+        ps.setString(2, "%" + searchDescription + "%");
+        ps.setString(3, "%" + searchPrice + "%");
+        ResultSet rs = ps.executeQuery();
+        return mapResultSetToList(rs);
+    } catch (SQLException e) {
+        System.err.println(e);
+        return null;
+    }
+}</pre></code>
+            <figcaption class="center">The data layer code that handles the search functionality</figcaption>
+        </figure>
+        <figure>
+            <code><pre>private static ArrayList&lt;Object&gt; mapResultSetToList(ResultSet rs) throws SQLException {
+    var productLineItemList = new ArrayList&lt;Object&gt;();
+    
+    while (rs.next()) {
+        int type = rs.getInt("Type");
+        
+        // if the row is a product
+        if (type == 0) {
+            String code = rs.getString("ProductCode");
+            String description = rs.getString("Description");
+            double price = rs.getDouble("Price");
+            
+            Product product = new Product(code, description, price);
+            productLineItemList.add(product);
+            
+        // if the row is a line item
+        } else if (type == 1) {
+            int lineItemId = rs.getInt("LineItemID");
+            int invoiceId = rs.getInt("InvoiceID");
+            String productCode = rs.getString("ProductCode");
+            int quantity = rs.getInt("Quantity");
+            
+            LineItem lineItem = new LineItem(lineItemId, invoiceId, productCode, quantity);
+            productLineItemList.add(lineItem);
+        }
+    }
+    
+    return productLineItemList;
+}</pre></code>
+            <figcaption class="center">
+                The data layer code that handles object-relational-mapping for the main products / line items list
+            </figcaption>
+        </figure>
+        <figure>
+            <code><pre>private Product getProductInput(String mode) {
+    String code = productInputCodeField.getText().trim();
+    String description = productInputDescriptionField.getText().trim();
+    String priceStr = productInputPriceField.getText().trim();
+    
+    Validation v = new Validation();
+    String errorMsg = "";
+    
+    errorMsg += v.isPresent(code, "Product code");
+    
+    if (code.length() > 15) {
+        errorMsg += "Product code must be 15 characters or less.\n";
+    }
+    
+    // if we are trying to add a product, we need to check that the
+    // code does not already exist
+    if (mode.equals("add") && !code.isEmpty() &&
+            ProductLineItemDB.getProduct(code) != null) {
+        errorMsg += "A product with that code already exists.\n";
+    }
+    
+    errorMsg += v.isPresent(description, "Description");
+    
+    // if we are trying to add a product, we need to check that the
+    // description does not already exist
+    if (mode.equals("add") && !description.isEmpty() &&
+            ProductLineItemDB.getProductByDescription(description) != null) {
+        errorMsg += "A product with that description already exists.\n";
+        
+    // if we are trying to update a product, we need to check that no
+    // other product has the same description
+    } else if (mode.equals("update") && !description.isEmpty()) {
+        Product tempProduct = ProductLineItemDB.getProductByDescription(description);
+        if (tempProduct != null && !code.equals(tempProduct.getCode())) {
+            errorMsg += "A product with that description already exists.\n";
+        }
+    }
+    
+    errorMsg += v.isDouble(priceStr, "Price", 0, 1000000);
+    
+    if (!errorMsg.isEmpty()) {
+        showErrorMessage("Invalid data", errorMsg);
+        return null;
+    }
+    
+    double price = Double.parseDouble(priceStr);
+    
+    return new Product(code, description, price);
+}</pre></code>
+            <figcaption class="center">Presentation layer code that handles product information input and validation</figcaption>
+        </figure>
+        <figure>
+            <code><pre>@Override
+public void start(Stage stage) {
+    stage.setTitle(appTitle);
+    
+    GridPane appGrid = new GridPane();
+    appGrid.setAlignment(Pos.TOP_CENTER);
+    appGrid.setPadding(new Insets(20));
+    appGrid.setHgap(20);
+    appGrid.setVgap(20);
+    
+    // product input grid
+    
+    productInputGrid.setAlignment(Pos.CENTER);
+    productInputGrid.setHgap(20);
+    productInputGrid.setVgap(20);
+    
+    productInputGrid.add(new Label("Product code:"), 0, 0);
+    productInputCodeField.setMaxWidth(150);
+    productInputGrid.add(productInputCodeField, 1, 0);
+    
+    productInputGrid.add(new Label("Description:"), 0, 1);
+    productInputDescriptionField.setPrefWidth(300);
+    productInputGrid.add(productInputDescriptionField, 1, 1);
+    
+    productInputGrid.add(new Label("Price:"), 0, 2);
+    productInputPriceField.setMaxWidth(150);
+    productInputGrid.add(productInputPriceField, 1, 2);
+    
+    appGrid.add(productInputGrid, 0, 0);</pre></code>
+        <figcaption class="center">A portion of the presentation layer code that sets up the main view</figcaption>
+        </figure>
+    </main>
+    <a href="#" class="back-to-top">&uparrow; Top</a>
+</body>
+</html>
