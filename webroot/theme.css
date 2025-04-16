@@ -77,6 +77,16 @@ a {
     padding: 2rem;
 }
 
+@media (max-width: 30rem) {
+    .header-popout {
+        padding: 0.5rem;
+    }
+
+    .header-popout-inner {
+        padding: 1rem;
+    }
+}
+
 .header-popout-name {
     font-size: 4rem;
     font-weight: bold;
