@@ -12,7 +12,7 @@
 }
 
 .hero-banner {
-    background-image: url('images/IMG_1395.jpg');
+    background-image: url('./images/IMG_1395.jpg');
     background-attachment: fixed;
     background-position: center;
     min-height: 100vh;
