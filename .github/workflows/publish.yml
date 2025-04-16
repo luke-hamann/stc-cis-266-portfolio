@@ -23,7 +23,7 @@ jobs:
             - name: Upload Website
               uses: actions/upload-pages-artifact@v3
               with:
-                path: .
+                path: webroot/
     
     deploy:
         name: Deploy Website
