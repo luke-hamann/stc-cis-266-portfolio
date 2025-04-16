@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsPro Technical Support Website</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <a href=".">Home</a>
+                </li>
+                <li class="header-li">
+                    <a href="CIS_Syllabi.html">CIS Syllabi</a>
+                </li>
+                <li class="header-li">
+                    <a href="LukeHamannResume.pdf">Resume.pdf</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cis-syllabi">
+        <h1>SportsPro Technical Support Website</h1>
+        <p>The utilized technologies include:</p>
+        <ul>
+            <li>C#</li>
+            <li>ASP.NET Core MVC</li>
+            <li>Razor pages</li>
+            <li>Bootstrap</li>
+            <li>jQuery</li>
+        </ul>
+        <figure>
+            <img src="images/sportspro_product_manager.png">
+            <figcaption>The product manager page</figcaption>
+        </figure>
+        <figure>
+            <img src="images/sportspro_product_edit.png">
+            <figcaption>The product add/edit form</figcaption>
+        </figure>
+        <figure>
+            <img src="images/sportspro_customer_add.png">
+            <figcaption>The customer add/edit form</figcaption>
+        </figure>
+        <figure>
+            <img src="images/sportspro_register.png">
+            <figcaption>The registration page</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SportsPro.Models;
+using SportsPro.Models.DataLayer;
+
+namespace SportsPro.Controllers
+{
+    [Authorize(Roles = "Admin")]
+    public class ValidationController : Controller
+    {
+        private Repository<Customer> customers;
+
+        public ValidationController(SportsProContext context)
+        {
+            customers = new Repository<Customer>(context);
+        }
+
+        public JsonResult CheckEmail(string email, string customerId, [FromServices] IRepository<Customer> cRep)
+        {
+            int id = 0;
+            int.TryParse(customerId, out id);
+
+            string error = Check.EmailExists(cRep, email, id);
+
+            if (string.IsNullOrEmpty(error))
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(error);
+            }
+        }
+    }
+}</pre></code>
+            <figcaption>This is an example of an action method that handles remote validation for checking that an email address is not duplicate.</figcaption>
+        </figure>
+        <figure>
+<code><pre>@model Product
+@{
+    ViewData[&quot;Title&quot;] = ViewBag.Mode + &quot; Product&quot;;
+    @section scripts {
+        &lt;script src=&quot;~/lib/jquery-validation/dist/jquery.validate.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js&quot;&gt;&lt;/script&gt;
+    }
+}
+
+&lt;h1&gt;@ViewData[&quot;Title&quot;]&lt;/h1&gt;
+
+&lt;form asp-action=&quot;Save&quot; method=&quot;post&quot;&gt;
+    &lt;input asp-for=&quot;ProductID&quot; type=&quot;hidden&quot; /&gt;
+    &lt;input value=&quot;Mode&quot; dirname=&quot;Mode&quot; value=&quot;@ViewBag.Mode&quot; type=&quot;hidden&quot;/&gt;
+    &lt;div asp-validation-summary=&quot;All&quot; class=&quot;text-danger&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label asp-for=&quot;ProductCode&quot; class=&quot;form-label&quot;&gt;Code&lt;/label&gt;
+        &lt;input asp-for=&quot;ProductCode&quot; class=&quot;form-control&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label asp-for=&quot;Name&quot; class=&quot;form-label&quot;&gt;Name&lt;/label&gt;
+        &lt;input asp-for=&quot;Name&quot; class=&quot;form-control&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label asp-for=&quot;YearlyPrice&quot; class=&quot;form-label&quot;&gt;Yearly Price&lt;/label&gt;
+        &lt;input asp-for=&quot;YearlyPrice&quot; class=&quot;form-control&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label asp-for=&quot;ReleaseDate&quot; class=&quot;form-label&quot;&gt;Release Date&lt;/label&gt;
+        &lt;input asp-for=&quot;ReleaseDate&quot; step=&quot;1&quot; class=&quot;form-control&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Save&lt;/button&gt;
+        &lt;a asp-action=&quot;List&quot; class=&quot;btn btn-primary&quot;&gt;Cancel&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/form&gt;</pre></code>
+            <figcaption>This is the Razor view for the product add/edit form.</figcaption>
+        </figure>
+        <figure>
+<code><pre>using System.ComponentModel.DataAnnotations;
+
+namespace SportsPro.Models
+{
+    public class RegisterViewModel
+    {
+        [Required(ErrorMessage = "Please enter a username.")]
+        [StringLength(255)]
+        public string Username { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Please enter a password.")]
+        [DataType(DataType.Password)]
+        [Compare("ConfirmPassword")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Please confirm your password.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm Password")]
+        public string ConfirmPassword { get; set; } = string.Empty;
+    }
+}
+</pre></code>
+            <figcaption>The model for the registration form</figcaption>
+        </figure>
+    </main>
+</body>
+</html>

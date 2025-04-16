@@ -1,0 +1,155 @@
+@charset 'utf-8';
+
+* {
+    margin: 0;
+    padding: 0;
+    font-size: initial;
+    font-weight: initial;
+}
+
+:root {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.hero-banner {
+    background-image: url('images/IMG_1395.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.hero-header {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-header-nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.header-ul {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    z-index: 2;
+}
+
+.header-li {
+    padding: 5rem;
+    white-space: nowrap;
+    flex-grow: 1;
+    text-align: center;
+    max-width: 5rem;
+}
+
+@media (max-width: 50rem) {
+    .header-li {
+        padding: 2rem 1rem;
+    }
+}
+
+.header-popout {
+    border: 2pt solid;
+    backdrop-filter: blur(5pt);
+    font-size: 4rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    max-width: 50rem;
+    text-align: center;
+}
+
+.header-popout-inner {
+    border: 2pt solid;
+    padding: 2rem;
+}
+
+.header-popout-name {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.header-popout-description {
+    font-size: 1.5rem;
+}
+
+.h1 {
+    font-size: 3rem;
+    margin: 2rem;
+}
+
+.gallery {
+    margin: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    figure {
+        width: 100%;
+        max-width: 30rem
+    }
+
+    a {
+        display: block;
+        aspect-ratio: 16 / 9;
+        border-radius: 5pt;
+        width: 100%;
+        background-size: 100%;
+        background-position: center;
+        box-shadow: 0 0 4pt black;
+        transition: background-size 150ms;
+        transition-timing-function: ease-in-out;
+
+        &:hover {
+            background-size: 105%;
+        }
+    }
+
+    figcaption {
+        text-align: center;
+        margin-top: 1rem;
+    }
+}
+
+.cis-syllabi {
+    h1, h2, p, ul, figure {
+        margin: 3rem auto;
+        max-width: 50rem;
+    }
+
+    h1:first-of-type {
+        margin-top: 0;
+    }
+
+    h1, h2 {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    h1 { font-size: 4rem; }
+    h2 { font-size: 3rem; }
+
+    ul {
+        padding-left: 2rem;
+    }
+
+    pre {
+        border: 1px solid;
+        padding: 1rem;
+        border-radius: 5pt;
+        overflow-y: auto;
+    }
+
+    figure img {
+        width: 100%;
+        border-radius: 5pt;
+        box-shadow: 0 0 5pt;
+    }
+
+    figcaption {
+        margin-top: 1rem;
+    }
+}
