@@ -24,6 +24,7 @@ a {
     background-image: url('./images/devils_tower.jpg');
     background-attachment: fixed;
     background-position: center;
+    background-size: cover;
     min-height: 100vh;
 }
 
@@ -37,7 +38,18 @@ a {
 .hero-header-nav {
     position: absolute;
     top: 0;
+    padding-top: 5vh;
     width: 100%;
+}
+
+.header-nav {
+    padding-top: 5vh;
+}
+
+@media (max-width: 50rem) {
+    .hero-header-nav, .header-nav {
+        padding-top: 0;
+    }
 }
 
 .header-ul {
@@ -48,17 +60,11 @@ a {
 }
 
 .header-li {
-    padding: 5rem;
+    padding: 1rem;
     white-space: nowrap;
     flex-grow: 1;
     text-align: center;
     max-width: 5rem;
-}
-
-@media (max-width: 50rem) {
-    .header-li {
-        padding: 2rem 1rem;
-    }
 }
 
 .header-popout {
@@ -77,7 +83,7 @@ a {
     padding: 2rem;
 }
 
-@media (max-width: 30rem) {
+@media (max-width: 50rem) {
     .header-popout {
         padding: 0.5rem;
     }
@@ -107,19 +113,25 @@ a {
     margin: 2rem;
 }
 
-.center {
-    text-align: center;
-}
-
 .gallery {
     margin: 2rem;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
 
     figure {
-        width: 100%;
-        max-width: 30rem
+        @media (max-width: 120rem) {
+            width: calc(25vw - 3rem);
+        }
+
+        @media (max-width: 60rem) {
+            width: calc(50vw - 4rem);
+        }
+
+        @media (max-width: 30rem) {
+            width: 100%;
+        }
     }
 
     a {
@@ -184,7 +196,7 @@ a {
     figure img {
         display: block;
         margin: 0 auto;
-        max-height: 80vh;
+        max-height: 70vh;
         max-width: 100%;
         border-radius: 5pt;
         box-shadow: 0 0 5pt;
@@ -192,6 +204,7 @@ a {
 
     figcaption {
         margin-top: 1rem;
+        text-align: center;
     }
 }
 

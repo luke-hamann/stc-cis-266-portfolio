@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESTful AJAJ Service and Testers</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <a href=".">Home</a>
+                </li>
+                <li class="header-li">
+                    <a href="CIS_Syllabi.html">CIS Syllabi</a>
+                </li>
+                <li class="header-li">
+                    <a href="LukeHamannResume.pdf">Resume.pdf</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cis-syllabi">
+        <h1>RESTful AJAJ Service and Testers</h1>
+        <p>
+            This is a simple (test) application that uses PHP to work with a MySQL table.
+            Records from a table can be read all at once or one at a time.
+            Several tester pages for checking database operations are also included.
+            A client form page also uses AJAJ to read records without a page reload.
+            This program was a piece of homework for a web services class.
+        </p>
+        <p>
+            The technologies include:
+        </p>
+        <ul>
+            <li>PHP</li>
+            <li>AJAJ</li>
+        </ul>
+        <figure>
+            <img src="images/web_services_unit_2_ex_3_main.png">
+            <figcaption>The "get all records" AJAJ client page</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_unit_2_ex_3_oop_testers.png">
+            <figcaption>The object-oriented database tester page</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_unit_2_ex_3_all_records.png">
+            <figcaption>The "get all records" tester page</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_unit_2_ex_3_one_record.png">
+            <figcaption>The "get one record" page</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>&lt;?php
+
+include ('class_lib/haml_displayTable.php');
+
+$table = $_REQUEST['tableName'] ?? &quot;haml_foods&quot;; //set which table to display records from
+
+$DB_Access = new haml_displayTable();
+$DB_Result = $DB_Access-&gt;displayRecords($table);
+$rValue = &quot;List of Records from &quot; . $table . &quot; table&lt;br /&gt;&quot;;
+        while($row = $DB_Result-&gt;fetch_assoc())
+        { 
+            foreach($row as $value)
+            {
+                $rValue = $rValue . &quot;$value &quot;; //display record values with space between
+            }
+            $rValue = $rValue . &quot;&lt;br /&gt;&quot;;
+        }
+print($rValue);
+
+?&gt;</pre></code>
+            <figcaption>The service provider code that displays all records</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;?php
+include('class_lib/haml_displayTable.php'); //to provide class/functions for DB Access
+
+//$db = $_REQUEST[&quot;db&quot;]; //use defaults instead of a passed value
+
+print(&quot;&lt;h3&gt;&quot;);
+
+$DB_Access = new haml_displayTable(); //create a new object from the haml_displayTable class 
+
+//print($DB_Access-&gt;connectTo()); //connectTo( ) called from within the methods in haml_displayTable
+
+print(&quot;&lt;hr /&gt;&quot;);
+$DB_Result = $DB_Access-&gt;showDatabases( ); // call the showDatabases function 
+$rValue = &quot;List of Databases in MySQL: &lt;br /&gt;&quot;;
+        while($row = $DB_Result-&gt;fetch_assoc())
+        { 
+            foreach($row as $value)
+            {
+                $rValue = $rValue . &quot;$value &lt;br /&gt;&quot;;
+            }
+        }
+print($rValue);
+
+
+print(&quot;&lt;hr /&gt;&quot;);
+$DB_Result = $DB_Access-&gt;showTables();
+$rValue = &quot;List of Tables in students: &lt;br /&gt;&quot;;
+        while($row = $DB_Result-&gt;fetch_assoc())
+        { 
+            foreach($row as $value)
+            {
+                $rValue = $rValue . &quot;$value &lt;br /&gt;&quot;;
+            }
+        }
+        
+        print($rValue);</pre></code>
+            <figcaption>A snippet of the object-oriented database tester page</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;RESTful JSON-PHP MDB_Tables_API Web Service Client&lt;/title&gt;
+    &lt;/head&gt;
+&lt;body&gt;
+&lt;h3&gt;
+Please Click to view response from Web Service
+
+&lt;p&gt;
+&lt;!-- id of tableName is variable that JS AJAJ code will READ from in HTML page --&gt; 
+        &lt;form id=&quot;target&quot;&gt;
+            Table Name: &lt;input type=&quot;text&quot; id=&quot;tableName&quot; name =&quot;tableName&quot;&gt;&amp;nbsp
+            &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+        &lt;/form&gt;
+    &lt;/p&gt;
+    &lt;br /&gt;
+
+-----------------------------------------------------------------------------	
+    &lt;br /&gt;
+&lt;!-- id of aMessage is variable that JS AJAJ code will WRITE to in HTML page --&gt; 
+    &lt;p&gt;
+        Message Contents: &lt;br /&gt;
+        &lt;span id=&quot;aMessage&quot;&gt;&lt;/span&gt;
+        &lt;/p&gt;
+        
+&lt;/h3&gt;
+&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+
+$('#target').submit(function(event) {
+
+    event.preventDefault();
+    
+    var aTableName = $('#tableName').val();
+                
+    $.ajax({
+        type: 'GET',
+        url: '../ServiceProvider/MDB_Records_API.php',
+        data: 'tableName=' + aTableName,
+        dataType: 'json',
+        encode: true
+    })
+    .done(function(data) {
+        var length = data.length;
+        var records = &quot;Number of elements (records) in JSON Array Returned = &quot; + length + &quot;&lt;br /&gt;&quot;;
+        for (i = 0; i &lt; length; i++) { records += data[i] + &quot;&lt;br&gt;&quot;; }
+    
+        $('#aMessage').html(records);
+
+    })
+    .fail(function() {
+        $('#aMessage').text('An error occurred. Please try again.');
+    });
+
+    });
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+            <figcaption>
+                The HTML form and client-side code for handling the "get all records" AJAJ client
+            </figcaption>
+        </figure>
+    </main>
+    <footer class="footer">
+        &copy; 2025 Luke Hamann
+    </footer>
+    <a href="#" class="back-to-top">&uparrow; Top</a>
+</body>
+</html>

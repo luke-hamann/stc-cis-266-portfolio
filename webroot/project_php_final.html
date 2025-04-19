@@ -24,7 +24,214 @@
     </header>
     <main class="cis-syllabi">
         <h1>Forum Website</h1>
+        <p>
+            This project is a discussion website.
+            Discussions are divided into separate "forums."
+            Users can login to post and comment.
+            Several administrative functions are also available for managing users and changing passwords.
+            The code follows a highly modular, MVC design pattern.
+            The application was created individually as a PHP final project.
+        </p>
+        <p>
+            The technologies include:
+        </p>
+        <ul>
+            <li>PHP</li>
+            <li>MySQL</li>
+            <li>Bootstrap</li>
+        </ul>
+        <figure>
+            <img src="images/php_final_main.png">
+            <figcaption>The home page with a list a recent posts across all forums</figcaption>
+        </figure>
+        <figure>
+            <img src="images/php_final_post.png">
+            <figcaption>The page for reading a post and adding a comment</figcaption>
+        </figure>
+        <figure>
+            <img src="images/php_final_profile.png">
+            <figcaption>The user profile page that shows all a user's posts and comments</figcaption>
+        </figure>
+        <figure>
+            <img src="images/php_final_users_admin.png">
+            <figcaption>The users list as viewed by an administrator</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>&lt;?php
+/**
+* Title: Main Controller
+* Purpose: To be the entry point where controllers and models are imported,
+*          and the request context is prepared
+*/
+
+// Import the models
+require_once('models/entities/forum.php');
+require_once('models/entities/user.php');
+require_once('models/entities/post.php');
+require_once('models/entities/comment.php');
+require_once('models/databases/_database.php');
+require_once('models/databases/forumDB.php');
+require_once('models/databases/userDB.php');
+require_once('models/databases/postDB.php');
+require_once('models/databases/commentDB.php');
+
+// Start the session and get the current user
+session_start();
+if (!isset($_SESSION['userId'])) {
+    $_SESSION['userId'] = 0;
+}
+$currentUser = UserDB::getUser($_SESSION['userId']);
+
+// Get the action and request method
+$action = FILTER_INPUT(INPUT_POST, 'action')
+    ?? FILTER_INPUT(INPUT_GET, 'action') ?? 'home';
+$isGetRequest = ($_SERVER['REQUEST_METHOD'] == 'GET');
+$isPostRequest = ($_SERVER['REQUEST_METHOD'] == 'POST');
+
+// Import the controllers
+require_once('./controllers/_utilityFunctions.php');
+require_once('./controllers/accountController.php');
+require_once('./controllers/adminController.php');
+require_once('./controllers/homeController.php');
+require_once('./controllers/postController.php');
+
+return404();
+
+?&gt;</pre></code>
+            <figcaption>The front controller</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;?php include('./views/shared/header.php'); ?&gt;
+
+&lt;?php
+if ($model-&gt;mode == 'Add') {
+    $formAction = '?action=new';
+} else if ($model-&gt;mode == 'Edit') {
+    $formAction = '?action=editPost&amp;id=' . $model-&gt;post-&gt;id;
+}
+?&gt;
+
+&lt;div class=&quot;row my-5&quot;&gt;
+    &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+        &lt;form action=&quot;&lt;?php echo $formAction; ?&gt;&quot; method=&quot;post&quot;&gt;
+            &lt;h1&gt;&lt;?php echo $model-&gt;mode; ?&gt; Post&lt;/h1&gt;
+            &lt;?php include('./views/shared/formErrors.php'); ?&gt;
+            &lt;div class=&quot;mb-3&quot;&gt;
+                &lt;label for=&quot;forumId&quot; class=&quot;form-label&quot;&gt;Forum&lt;/label&gt;
+                &lt;select name=&quot;forumId&quot; id=&quot;forumId&quot; class=&quot;form-select&quot;&gt;
+                    &lt;option value=&quot;0&quot; &lt;?php echo (isset($model-&gt;post) &amp;&amp; $model-&gt;post-&gt;forumId == 0 ? 'selected' : ''); ?&gt;&gt;-&lt;/option&gt;
+                    &lt;?php foreach ($model-&gt;forums as $forum) : ?&gt;
+                        &lt;option value=&quot;&lt;?php echo $forum-&gt;id; ?&gt;&quot; &lt;?php echo (isset($model-&gt;post) &amp;&amp; $model-&gt;post-&gt;forumId == $forum-&gt;id ? 'selected' : ''); ?&gt;&gt;
+                            &lt;?php echo htmlspecialchars($forum-&gt;name); ?&gt;
+                        &lt;/option&gt;
+                    &lt;?php endforeach; ?&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mb-3&quot;&gt;
+                &lt;label for=&quot;title&quot; class=&quot;form-label&quot;&gt;Title&lt;/label&gt;
+                &lt;input type=&quot;text&quot; name=&quot;title&quot; id=&quot;title&quot; value=&quot;&lt;?php echo (isset($model-&gt;post) ? htmlspecialchars($model-&gt;post-&gt;title) : ''); ?&gt;&quot; class=&quot;form-control&quot; autocomplete=&quot;off&quot; /&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mb-3&quot;&gt;
+                &lt;label for=&quot;content&quot; class=&quot;form-label&quot;&gt;Content&lt;/label&gt;
+                &lt;textarea name=&quot;content&quot; id=&quot;content&quot; rows=&quot;5&quot; class=&quot;form-control&quot;&gt;&lt;?php echo (isset($model-&gt;post) ? htmlspecialchars($model-&gt;post-&gt;content) : ''); ?&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;text-center&quot;&gt;
+                &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; class=&quot;btn btn-primary&quot; /&gt;
+                &lt;a href=&quot;&lt;?php echo ($model-&gt;mode == 'Add' ? '?action=home' : '?action=post&amp;id=' . $model-&gt;post-&gt;id ); ?&gt;&quot; class=&quot;btn btn-secondary&quot;&gt;Cancel&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;?php include('./views/shared/footer.php'); ?&gt;</pre></code>
+            <figcaption>The post form add/edit view</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;?php
+/**
+* Title: Comment Database
+* Purpose: To view, add, update, and delete comments
+*/
+class CommentDB {
+    private const BASE_QUERY = '
+        SELECT
+            Comments.id,
+            Comments.content,
+            Comments.creationDate,
+            Comments.postId,
+            Users.id userId,
+            Users.name userName,
+            Users.isAdmin userIsAdmin,
+            Users.isGhost userIsGhost
+        FROM Comments
+            JOIN Users ON Comments.userId = Users.id
+    ';
+
+    // Convert a SQL result row to a comment object
+    public static function convertRowToComment($row) {
+        return new Comment(
+            $row['id'],
+            $row['content'],
+            new DateTime($row['creationDate']),
+            $row['postId'],
+            null,
+            $row['userId'],
+            new User(
+                $row['userId'],
+                $row['userName'],
+                '',
+                $row['userIsAdmin'],
+                $row['userIsGhost']
+            )
+        );
+    }</pre></code>
+            <figcaption>A snippet of the data layer code that handles comments</figcaption>
+        </figure>
+        <figure>
+            <code><pre>// Display the list of all users
+if ($action == 'users' &amp;&amp; $isGetRequest) {
+    $model = new UsersViewModel(UserDB::getUsers(), $currentUser);
+    include('./views/home/users.php');
+    exit();
+}
+
+// Display a single user and all their posts or comments
+if ($action == 'user' &amp;&amp; $isGetRequest) {
+    $id = FILTER_INPUT(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $user = getObjectOr404('user', $id);
+
+    if ($user-&gt;isGhost) {
+        return404();
+    }
+
+    $mode = FILTER_INPUT(INPUT_GET, 'mode');
+    if ($mode === null) {
+        $mode = 'posts';
+    } else if ($mode !== 'posts' &amp;&amp; $mode !== 'comments') {
+        return404();
+    }
+
+    $posts = [];
+    $comments = [];
+    if ($mode == 'posts') {
+        $posts = PostDB::getUserPosts($id);
+    } else {
+        $comments = CommentDB::getUserComments($id);
+    }
+
+    $model = new UserViewModel($user, $mode, $posts, $comments, $currentUser);
+    include('./views/home/user.php');
+    exit();
+}
+
+?&gt;</pre></code>
+            <figcaption>A snippet of the home controller that handles the user list and profile pages</figcaption>
+        </figure>
     </main>
+    <footer class="footer">
+        &copy; 2025 Luke Hamann
+    </footer>
     <a href="#" class="back-to-top">&uparrow; Top</a>
 </body>
 </html>

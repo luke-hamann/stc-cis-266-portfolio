@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dealership Data Website</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <a href=".">Home</a>
+                </li>
+                <li class="header-li">
+                    <a href="CIS_Syllabi.html">CIS Syllabi</a>
+                </li>
+                <li class="header-li">
+                    <a href="LukeHamannResume.pdf">Resume.pdf</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cis-syllabi">
+        <h1>Car Dealership Data Website</h1>
+        <p>
+            This application allows a user to manipulate data relating to a car dealership, including cars, customers, and salespersons.
+            Data can be manipulated using AJAJ-enhanced forms that perform CRUD operations without page reloads.
+            It also includes testers for viewing all records and the output of JSON endpoints.
+            It was completed as a group project for a web services class.
+        </p>
+        <p>
+            The technologies include:
+        </p>
+        <ul>
+            <li>PHP</li>
+            <li>AJAJ</li>
+        </ul>
+        <figure>
+            <img src="images/web_services_scrum_3_create_car.png">
+            <figcaption>The create car form on the home page</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_scrum_3_read_customer.png">
+            <figcaption>The read customer form on the home page</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_scrum_3_testers.png">
+            <figcaption>The testers page that displays all rows of all tables</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_scrum_3_read_salesperson_tester.png">
+            <figcaption>The read salesperson tester form</figcaption>
+        </figure>
+        <figure>
+            <img src="images/web_services_scrum_3_json_output.png">
+            <figcaption>The JSON response from the read salesperson endpoint</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>private function insert($tableName, $values) {
+    $columns = array_keys($values);
+    $columnList = implode(', ', $columns);
+    $params = implode(', ', preg_filter('/^/', ':', $columns));
+    $sql = &quot;INSERT INTO $tableName ($columnList) VALUES ($params)&quot;;
+
+    $statement = $this-&gt;prepare($sql, $values);
+    try {
+        $statement-&gt;execute();
+        $statement-&gt;closeCursor();
+        return $this-&gt;db-&gt;lastInsertId();
+    } catch (PDOException $e) {
+        die('Database error: ' . $e-&gt;getMessage());
+    }
+}
+
+private function update($tableName, $values) {
+    $columns = array_keys($values);
+    $changes = [];
+    foreach ($columns as $column) {
+        if ($column == 'id') continue;
+        $changes[] = &quot;$column = :$column&quot;;
+    }
+    $changes = implode(', ', $changes);
+
+    $sql = &quot;UPDATE $tableName SET $changes WHERE id = :id&quot;;
+
+    $statement = $this-&gt;prepare($sql, $values);
+    try {
+        $statement-&gt;execute();
+        $statement-&gt;closeCursor();
+        return ($statement-&gt;rowCount() == 1);
+    } catch (PDOException $e) {
+        die('Database error: ' . $e-&gt;getMessage());
+    }
+}</pre></code>
+            <figcaption>The data layer code that handles generic SQL insert and update statements</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;?php
+if ($_POST) {
+    require_once '../classes/DB.php';
+
+    $id = $_POST['id'];
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $hireDate = $_POST['hireDate'];
+    $salary = $_POST['salary'];
+    $commissionPercent = $_POST['commissionPercent'];
+
+    $salesperson = new Salesperson($id, $firstName, $lastName, $hireDate, $salary, $commissionPercent);
+
+    $db = new DB();
+
+    if ($db-&gt;updateSalesperson($salesperson)) {
+        $array = ['message' =&gt; 'Salesperson updated successfully!'];
+    } else {
+        $array = ['message' =&gt; 'Salesperson not found.'];
+    }
+
+    header('Content-Type: application/json');
+    print(json_encode($array));
+}
+?&gt;</pre></code>
+            <figcaption>The JSON endpoint that handles updates to salesperson information</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;script type=&quot;module&quot;&gt;
+    document.body.addEventListener(&quot;submit&quot;, async (event) =&gt; {
+        if (event.target.dataset.ajaj) {
+            event.preventDefault();
+
+            const rules = event.target.dataset.ajaj
+                .replace(/\s/g, &quot;&quot;).split(&quot;;&quot;)
+                .filter(rule =&gt; rule != &quot;&quot;).map(rule =&gt; rule.split(&quot;:&quot;))
+                .map(rule =&gt; ({ source: rule[0].split(&quot;.&quot;), selector: rule[1] }));
+
+            let url = event.target.getAttribute(&quot;action&quot;);
+            const method = event.target.getAttribute(&quot;method&quot;);
+
+            const formData = new FormData(event.target);
+            let body;
+            if (method == &quot;get&quot;) {
+                url += '?' + new URLSearchParams(formData).toString();
+            } else if (method == &quot;post&quot;) {
+                body = formData;
+            }
+
+            try {
+                const options = body ? { method, body } : { method };
+                const response = await fetch(url, options);
+                const json = await response.json();
+
+                for (const rule of rules) {
+                    let copy = JSON.parse(JSON.stringify(json));
+                    for (const key of rule.source) {
+                        copy = copy[key];
+                        if (!copy) break;
+                    }
+                    document.querySelector(rule.selector).innerText = copy ?? &quot;&quot;;
+                }
+            } catch (e) {
+                console.log(e);
+
+                document.querySelector(rules[0].selector).innerText = &quot;An error occurred.&quot;;
+                for (const rule of rules.slice(1)) {
+                    document.querySelector(rule.selector).innerText = &quot;&quot;;
+                }
+            }
+        }
+    });
+&lt;/script&gt;</pre></code>
+            <figcaption>The client-side AJAJ module that controls form submissions to JSON endponts</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;h3&gt;Read Car&lt;/h3&gt;
+&lt;form action=&quot;../Provider_3/API_3/carRead.php&quot; method=&quot;get&quot;
+    data-ajaj=&quot;
+        message: #carReadResponseMessage;
+        car.id: #carReadResponseId;
+        car.make: #carReadResponseMake;
+        car.model: #carReadResponseModel;
+        car.year: #carReadResponseYear;
+        car.color: #carReadResponseColor;
+        car.price: #carReadResponsePrice;
+    &quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;carReadId&quot;&gt;Id&lt;/label&gt;
+        &lt;input type=&quot;number&quot; name=&quot;id&quot; id=&quot;carReadId&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+        &lt;input type=&quot;reset&quot; value=&quot;Reset&quot; /&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;p&gt;
+    &lt;b&gt;Message&lt;/b&gt;: &lt;span id=&quot;carReadResponseMessage&quot;&gt;&lt;/span&gt;&lt;br /&gt;
+    &lt;b&gt;Id&lt;/b&gt;: &lt;span id=&quot;carReadResponseId&quot;&gt;&lt;/span&gt;&lt;br /&gt;
+    &lt;b&gt;Make&lt;/b&gt;: &lt;span id=&quot;carReadResponseMake&quot;&gt;&lt;/span&gt;&lt;br /&gt;
+    &lt;b&gt;Model&lt;/b&gt;: &lt;span id=&quot;carReadResponseModel&quot;&gt;&lt;/span&gt;&lt;br /&gt;
+    &lt;b&gt;Year&lt;/b&gt;: &lt;span id=&quot;carReadResponseYear&quot;&gt;&lt;/span&gt;&lt;br /&gt;
+    &lt;b&gt;Color&lt;/b&gt;: &lt;span id=&quot;carReadResponseColor&quot;&gt;&lt;/span&gt;&lt;br /&gt;
+    &lt;b&gt;Price&lt;/b&gt;: &lt;span id=&quot;carReadResponsePrice&quot;&gt;&lt;/span&gt;
+&lt;/p&gt;</pre></code>
+            <figcaption>The AJAJ-enhanced form for reading car data</figcaption>
+        </figure>
+    </main>
+    <footer class="footer">
+        &copy; 2025 Luke Hamann
+    </footer>
+    <a href="#" class="back-to-top">&uparrow; Top</a>
+</body>
+</html>
