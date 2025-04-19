@@ -144,9 +144,21 @@ a {
         box-shadow: 0 0 4pt black;
         transition: background-size 150ms;
         transition-timing-function: ease-in-out;
+        position: relative;
 
         &:hover {
             background-size: 105%;
+        }
+
+        .live-demo-badge {
+            color: white;
+            display: block;
+            background-color: red;
+            border-radius: 5pt;
+            position: absolute;
+            right: 5%;
+            bottom: 5%;
+            padding: 0.25rem;
         }
     }
 
@@ -205,6 +217,26 @@ a {
     figcaption {
         margin-top: 1rem;
         text-align: center;
+    }
+
+    .live-demo-button {
+        display: block;
+        text-align: center;
+        background-color: red;
+        color: white;
+        font-weight: bold;
+        font-size: xx-large;
+        padding: 1rem;
+        border-radius: 5pt;
+        max-width: fit-content;
+        margin: 0 auto;
+        text-decoration: none;
+        box-shadow: 0 0 5pt black;
+        transition: scale 100ms;
+
+        &:hover {
+            scale: 1.1;
+        }
     }
 }
 
