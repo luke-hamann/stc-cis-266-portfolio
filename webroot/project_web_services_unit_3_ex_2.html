@@ -25,13 +25,17 @@
     <main class="cis-syllabi">
         <h1>Products SOAP API with Database Emulator</h1>
         <p>
-
+            This application emulates a database of products and provides a SOAP API for accessing them.
+            Naturally, this includes the business classes and the SOAP web service itself.
+            However, it also includes JSP pages for testing the business classes as well as a SOAP web service test client.
+            The program was completed as an assignment to fulfill the requirements of a web services course.
         </p>
         <p>
             The technologies include:
         </p>
         <ul>
             <li>Java</li>
+            <li>JSP</li>
             <li>IBM WebSphere Bottom-Up SOAP Web Service Code Generator</li>
             <li>SOAP</li>
             <li>WSDL</li>
@@ -55,20 +59,174 @@
         </figure>
         <h2>Code Samples</h2>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>package db_emulator;
+
+public class ProductDB
+{
+    public static Product getProduct(String productCode)
+    {
+        // In a more realistic application, this code would
+        // get the data for the product from a file or database
+        // For now, this code just uses if/else statements
+        // to return the correct product data
+
+        // create the Product object
+        Product product = new Product();
+
+        // fill the Product object with data based on productCode received
+        product.setCode(productCode);
+        
+        if (productCode.equalsIgnoreCase("java"))
+        {
+            product.setDescription("Murach's Beginning Java 2");
+            product.setPrice(49.50);
+        }
+        else if (productCode.equalsIgnoreCase("jsps"))
+        {
+            product.setDescription("Murach's Java Servlets and JSP");
+            product.setPrice(49.50);
+        }
+        else if (productCode.equalsIgnoreCase("mcb2"))
+        {
+            product.setDescription("Murach's Mainframe COBOL");
+            product.setPrice(59.50);
+        }
+        else if (productCode.equalsIgnoreCase("txtp"))
+        {
+            product.setDescription("TextPad");
+            product.setPrice(20.00);
+        }
+        else if (productCode.equalsIgnoreCase("haml"))
+        {
+            product.setDescription("Luke Hamann's New Textbook");
+            product.setPrice(29.99);
+        }
+        else
+        {
+            product.setDescription("Unknown Product Code");
+        }
+        return product;
+    }
+}</pre></code>
+            <figcaption>The product database emulator class</figcaption>
         </figure>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>package db_emulator;
+
+/* The "Application Interface"/API class "exposes" those methods that you wish
+    * clients (often from outside organizations/companies) to be able to access / utilize.
+    */
+
+public class ProductDB_API {
+    
+    public static ProductDB aProductDB;
+        
+    public String createProductDB_Object()
+    {
+    
+        String rValue = "";
+        try{
+            aProductDB = new ProductDB();
+            rValue =  "ProductDB object created successfully";
+        }
+        catch(Exception err)
+        {
+            rValue = "Error: " + err.toString();
+        }
+        
+        return rValue;
+    }
+    
+    public String getProduct(String aProductCode)
+    {
+        String rValue = "";
+        try{
+        Product aProduct = ProductDB.getProduct(aProductCode);
+        rValue = aProduct.toString();	
+        }
+        catch(Exception err)
+        {
+            rValue = "Error: " + err.toString();
+        }
+        return rValue;
+        
+    }
+    
+    public Product getProductObject(String aProductCode)
+    {
+        try{
+        Product aProduct = ProductDB.getProduct(aProductCode);
+        return aProduct;	
+        }
+        catch(Exception err)
+        {
+            Product aProduct = ProductDB.getProduct(err.toString());
+            return aProduct;
+        }
+    
+        
+    }
+
+}</pre></code>
+            <figcaption>The product database emulator API class with methods acting as SOAP operations</figcaption>
         </figure>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>&lt;!DOCTYPE HTML&gt;
+&lt;%@page import=&quot;db_emulator.*&quot;%&gt;
+&lt;%@page language=&quot;java&quot;
+    contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ProductDB_API Tester&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;% 
+    ProductDB_API o1 = new ProductDB_API(); //create object o1 from Product DB API class
+    o1.createProductDB_Object(); //create a static ProductDB object using method in o1
+    String strProduct = o1.getProduct(&quot;mcb2&quot;); //get the properties of a product object &amp; store in a String 
+    out.print(&quot;Output from ProductDB_API getProduct(mcb2) method: &lt;br /&gt;&quot; + strProduct); //display the String returned by getProduct( ) method
+
+    //try to get properties from a product not in DB table
+    Product aProduct = o1.getProductObject(&quot;xxxx&quot;); //get the properties of a product object &amp; store in a String
+    aProduct.setDescription(&quot;This is the Description of Product xxxx&quot;); 
+    out.print(&quot;&lt;br /&gt;&lt;br /&gt;Output from ProductDB_API getProduct(xxxx).getDescription( ) method: &lt;br /&gt;&quot; + aProduct.getDescription()); //display the String returned by getProduct( ) method
+
+%&gt;
+
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+            <figcaption>The product database emulator API class tester JSP page</figcaption>
         </figure>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>&lt;!DOCTYPE HTML&gt;
+&lt;%@page language=&quot;java&quot;
+    contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;%@page import=&quot;db_emulator.*&quot; %&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ProductDB Class Tester&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ProductDB Class Tester: &lt;br /&gt;&lt;br /&gt;
+&lt;%
+            
+    //call the ProductDB static getProduct(String productCode) method
+    //&amp; display returned object's properties using toString( ) method
+    Product aProduct = ProductDB.getProduct(&quot;haml&quot;);
+        out.print(&quot;&lt;br /&gt;Output from toString() after calling the static method &quot;
+        + &quot; getProduct(String) which returns a Product object &lt;br /&gt;&quot;
+            + aProduct.toString());	 
+    
+    %&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+            <figcaption>The product database emulator class tester JSP page</figcaption>
         </figure>
     </main>
     <footer class="footer">
