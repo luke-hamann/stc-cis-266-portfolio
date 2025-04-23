@@ -25,7 +25,12 @@
     <main class="cis-syllabi">
         <h1>Cats SOAP API</h1>
         <p>
-
+            This application provides an "echo" API for inputting and outputting cat information, accessible through both a web application and a SOAP web service.
+            The API accepts information relevant to a cat: name, color, and weight.
+            It then constructs a cat object and returns the data in an appropriately formatted manner.
+            The cat entity class, API class, HTML input form, and JSP processing page were written from scratch.
+            We then used IBM WebSphere to generate a SOAP web service and test client based on our classes.
+            This program was created as a group project to fulfill the requirements of a web service course.
         </p>
         <p>
             The technologies include:
@@ -38,38 +43,163 @@
             <li>WSDL</li>
             <li>XSD</li>
         </ul>
+        <h2>Presentation</h2>
+        <embed src="project_web_services_scrum_4_presentation.pdf" type="application/pdf">
+        <h2>Demo Videos</h2>
+        <video controls>
+            <source src="project_web_services_scrum_4_demo_1.mp4" type="video/mp4">
+        </video>
+        <video controls>
+            <source src="project_web_services_scrum_4_demo_2.mp4" type="video/mp4">
+        </video>
+        <h2>Screenshots</h2>
         <figure>
-            <img src="images/web_services_scrum_4_main.png">
-            <figcaption>The web service test client after successfully submitting data</figcaption>
+            <img src="images/web_services_scrum_4_test_client_input.png">
+            <figcaption>The SOAP web service test client before submitting cat information</figcaption>
         </figure>
         <figure>
-            <img src="">
-            <figcaption></figcaption>
+            <img src="images/web_services_scrum_4_test_client_output.png">
+            <figcaption>The SOAP web service test client after submitting cat information</figcaption>
         </figure>
         <figure>
-            <img src="">
-            <figcaption></figcaption>
+            <img src="images/web_services_scrum_4_web_app_input.png">
+            <figcaption>The web application tester before submitting cat information</figcaption>
         </figure>
         <figure>
-            <img src="">
-            <figcaption></figcaption>
+            <img src="images/web_services_scrum_4_web_app_output.png">
+            <figcaption>The web application tester after submitting cat information</figcaption>
         </figure>
         <h2>Code Samples</h2>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>package Team1_scrum4;
+
+public class Team1_Cat {
+    private String name;
+    private String color;
+    private double weight;
+    
+    public Team1_Cat() {
+        this.name = "";
+        this.color = "";
+        this.weight = 0.0;
+    }
+    
+    public Team1_Cat(String name) {
+        this.name = name;
+        this.color = "";
+        this.weight = 0.0;
+    }
+    
+    public Team1_Cat(String name, String color, double weight) {
+        this.name = name;
+        this.color = color;
+        this.weight = weight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+    
+    public String toString() {
+        return String.format("Name: %s, Color: %s, Weight (lbs): %.2f", name, color, weight);
+    }
+}</pre></code>
+            <figcaption>The cat entity class</figcaption>
         </figure>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>package Team1_scrum4;
+
+public class Team1_Cat_API {
+    public Team1_Cat createCat(String name, String color, double weight) {
+        try {
+            Team1_Cat cat = new Team1_Cat(name, color, weight);
+            return cat;
+        } catch(Exception err) {
+            Team1_Cat cat = new Team1_Cat(err.toString());
+            return cat;
+        }
+    }
+}</pre></code>
+            <figcaption>The cat API class</figcaption>
         </figure>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Team1 Cat&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Team1 Cat&lt;/h1&gt;
+&lt;form action=&quot;Team1_Cat.jsp&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;name&quot;&gt;Name:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; required /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;color&quot;&gt;Color:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; name=&quot;color&quot; id=&quot;color&quot; required /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;weight&quot;&gt;Weight (lbs):&lt;/label&gt;
+        &lt;input type=&quot;number&quot; name=&quot;weight&quot; id=&quot;weight&quot; required /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;br /&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+            <figcaption>The cat information input form</figcaption>
         </figure>
         <figure>
-            <code><pre></pre></code>
-            <figcaption></figcaption>
+            <code><pre>&lt;!DOCTYPE HTML&gt;&lt;%@page language=&quot;java&quot;
+    contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;%@page import=&quot;Team1_scrum4.*&quot; %&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Team1 Cat&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Team1 Cat&lt;/h1&gt;
+&lt;%
+    Team1_Cat_API api = new Team1_Cat_API();
+
+    String name = request.getParameter(&quot;name&quot;);
+    String color = request.getParameter(&quot;color&quot;);
+    String weightStr = request.getParameter(&quot;weight&quot;);
+    double weight = Double.parseDouble(weightStr);
+    
+    Team1_Cat cat = api.createCat(name, color, weight);
+    
+    out.print(cat);
+%&gt;
+&lt;p&gt;&lt;a href=&quot;Team1_Cat.html&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+            <figcaption>The cat information JSP output page</figcaption>
         </figure>
     </main>
     <footer class="footer">

@@ -205,6 +205,16 @@ a {
         overflow-y: auto;
     }
 
+    embed, video {
+        display: block;
+        margin: 3rem auto;
+        width: 100%;
+        max-width: 50rem;
+    }
+
+    embed { aspect-ratio: 16 / 10; }
+    video { aspect-ratio: 16 / 9; }
+
     figure img {
         display: block;
         margin: 0 auto;
