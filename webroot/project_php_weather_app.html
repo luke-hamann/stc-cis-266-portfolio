@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <a href=".">Home</a>
+                </li>
+                <li class="header-li">
+                    <a href="LukeHamannResume.pdf">Resume.pdf</a>
+                </li>
+                <li class="header-li">
+                    <a href="CIS_Syllabi.html">CIS Syllabi</a>
+                </li>
+                <li class="header-li">
+                    <details>
+                        <summary>Projects</summary>
+                        <ul>
+                            <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
+                            <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
+                            <li><a href="project_php_weather_app.html">Weather App</a></li>
+                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
+                            <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
+                            <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
+                            <li><a href="project_web_services_scrum_4.html">Cats SOAP API</a></li>
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cis-syllabi">
+        <h1>Weather App</h1>
+        <p>
+            This application allows a user to keep daily log entries for the weather in major cities in South Dakota.
+            All entries can be viewed on the home page.
+            Entries can be added or deleted.
+            There is also a page for viewing the locations for weather entries.
+            This program was created individually to fulfill the requirements of a PHP course.
+        </p>
+        <p>The technologies include:</p>
+        <ul>
+            <li>PHP</li>
+            <li>MySQL</li>
+        </ul>
+        <figure>
+            <img src="media/php_weather_app/home.png">
+            <figcaption>The home page for viewing (and deleting) weather log entries</figcaption>
+        </figure>
+        <figure>
+            <img src="media/php_weather_app/add.png">
+            <figcaption>The page for adding a weather log entry</figcaption>
+        </figure>
+        <figure>
+            <img src="media/php_weather_app/locations.png">
+            <figcaption>The location page that lists cities in South Dakota</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>require 'database.php';
+
+$errors = '';
+if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+    if ($id == NULL || $id == FALSE) {
+        $errors = 'Unable to delete';
+    } else {
+        $query = '
+            DELETE FROM logs
+            WHERE id = :id;
+        ';
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $statement->closeCursor();
+    }
+}
+
+$query = '
+    SELECT
+        logs.id,
+        locations.name location,
+        logs.date,
+        logs.description
+    FROM logs
+        JOIN locations ON (logs.location_id = locations.id)
+    ORDER BY LOWER(locations.name), logs.date;
+    ';
+$statement = $db->prepare($query);
+$statement->execute();
+$logs = $statement->fetchAll();
+$statement->closeCursor();</pre></code>
+            <figcaption>
+                The routing and data access code on the home page that handles deleting and listing entries
+            </figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;main&gt;
+&lt;h2&gt;Add log&lt;/h2&gt;
+&lt;?php if ($error) : ?&gt;
+&lt;p class=&quot;errors&quot;&gt;
+    &lt;?php echo htmlspecialchars($error); ?&gt;
+&lt;/p&gt;
+&lt;?php endif; ?&gt;
+&lt;form action=&quot;add.php&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;date&quot;&gt;Date:&lt;/label&gt;
+        &lt;input type=&quot;date&quot; name=&quot;date&quot; id=&quot;date&quot; autofocus
+            value=&quot;&lt;?php echo htmlspecialchars($date); ?&gt;&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;location_id&quot;&gt;Location:&lt;/label&gt;
+        &lt;select name=&quot;location_id&quot; id=&quot;location_id&quot;&gt;
+            &lt;?php foreach ($locations as $location) : ?&gt;
+            &lt;option value=&quot;&lt;?php echo htmlspecialchars($location['id']); ?&gt;&quot;
+                &lt;?php if ($location['id'] == $location_id) echo 'selected'; ?&gt; &gt;
+                &lt;?php echo htmlspecialchars($location['name']); ?&gt;
+            &lt;/option&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;description&quot;&gt;Description:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; name=&quot;description&quot; id=&quot;description&quot;
+            value=&quot;&lt;?php echo htmlspecialchars($description); ?&gt;&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+        &lt;a href=&quot;.&quot;&gt;Cancel&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/main&gt;</pre></code>
+            <figcaption>The view code that handles the entry add page</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;?php
+/*
+    Name: Luke Hamann
+    Date: 2024-09-16
+    Purpose: This page lists all available geographic locations.
+*/
+
+require 'database.php';
+
+$query = '
+    SELECT name, description
+    FROM locations;
+';
+$statement = $db-&gt;prepare($query);
+$statement-&gt;execute();
+$locations = $statement-&gt;fetchAll();
+$statement-&gt;closeCursor();
+?&gt;
+&lt;?php include 'header.php'; ?&gt;
+&lt;main&gt;
+    &lt;h2&gt;Locations&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Name&lt;/th&gt;
+                &lt;th&gt;Description&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;?php foreach ($locations as $location) : ?&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;?php echo htmlspecialchars($location['name']); ?&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;?php echo htmlspecialchars($location['description']); ?&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/main&gt;
+&lt;?php include 'footer.php'; ?&gt;</pre></code>
+            <figcaption>The code for the locations list page</figcaption>
+        </figure>
+    </main>
+    <footer class="footer">
+        &copy; 2025 Luke Hamann
+    </footer>
+    <a href="#" class="back-to-top">&uparrow; Top</a>
+</body>
+</html>
