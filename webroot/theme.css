@@ -79,6 +79,7 @@ a {
         padding: 1rem;
         max-width: 30rem;
         border: 1px solid;
+        z-index: 3;
 
         li {
             white-space: wrap;
