@@ -40,10 +40,10 @@
     <main class="cis-syllabi">
         <h1>SportsPro Technical Support Website</h1>
         <p>
-            This application was a group project for an ASP.NET Core MVC class.
-            The goal was to create a website for managing technical support tickets.
+            This is a website for managing technical support tickets.
             It includes pages for managing products, technicians, customers, incidents, and registrations.
-            Additionally, some functionality requires a login.
+            Some functionality is login-protected.
+            The application was a group project for an ASP.NET Core MVC course.
         </p>
         <p>
             My responsibilities included:
@@ -51,7 +51,7 @@
         <ul>
             <li>Writing most components relating to the product management pages</li>
             <li>Writing some components relating to validation on the customer management pages</li>
-            <li>Refactoring the data layer to use repositories (and make it easier to unit test)</li>
+            <li>Refactoring the data layer to use a repository pattern (and make it easier to unit test)</li>
             <li>Implementing role-based administrative access</li>
         </ul>
         <p>The technologies include:</p>
@@ -89,6 +89,47 @@ using SportsPro.Models.DataLayer;
 
 namespace SportsPro.Controllers
 {
+    [Authorize(Roles = &quot;Admin&quot;)]
+    public class ProductController : Controller
+    {
+        private IRepository&lt;Product&gt; _productRepository;
+
+        public ProductController(IRepository&lt;Product&gt; productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        [Route(&quot;[controller]s&quot;)]
+        [HttpGet]
+        public ViewResult List()
+        {
+            var queryOptions = new QueryOptions&lt;Product&gt;
+            {
+                OrderBy = p =&gt; p.ReleaseDate
+            };
+
+            var products = _productRepository.List(queryOptions);
+            return View(products);
+        }
+
+        [HttpGet]
+        public ViewResult Add()
+        {
+            var product = new Product();
+            ViewBag.Mode = &quot;Add&quot;;
+            product.ReleaseDate = product.ReleaseDate.AddMilliseconds(-product.ReleaseDate.Millisecond);
+            return View(&quot;Edit&quot;, product);
+        }</pre></code>
+            <figcaption>A snippet of the product controller</figcaption>
+        </figure>
+        <figure>
+            <code><pre>using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SportsPro.Models;
+using SportsPro.Models.DataLayer;
+
+namespace SportsPro.Controllers
+{
     [Authorize(Roles = "Admin")]
     public class ValidationController : Controller
     {
@@ -117,7 +158,7 @@ namespace SportsPro.Controllers
         }
     }
 }</pre></code>
-            <figcaption>The remote validation action method for checking that a customer's email address is unique</figcaption>
+            <figcaption>The validation controller that performs remote validation to ensure a customer's email address is unique</figcaption>
         </figure>
         <figure>
 <code><pre>@model Product
@@ -181,7 +222,7 @@ namespace SportsPro.Models
     }
 }
 </pre></code>
-            <figcaption>The view model for the registration form</figcaption>
+            <figcaption>The registration form view model</figcaption>
         </figure>
     </main>
     <footer class="footer">
