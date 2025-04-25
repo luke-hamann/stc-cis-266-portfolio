@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -43,8 +43,7 @@
             This is a Java desktop application for managing a database of products and line items.
             It provides all CRUD functionality for both products and line items as well as a search capability.
             Data is stored in a SQLite database.
-            This application was written as a bonus assignment for an advanced level Java class.
-            I developed this application individually by watching and "cloning" a user interface demonstration of a potential solution provided by our professor.
+            It was written as a bonus assignment for an advanced Java class by "cloning" a user interface demonstration of a potential solution provided by our professor.
         </p>
         <p>
             The technologies include:
@@ -56,7 +55,7 @@
         </ul>
         <figure>
             <img src="media/product_line_item/main.png">
-            <figcaption>The main view that provides buttons to access all of its CRUD functions</figcaption>
+            <figcaption>The main view with buttons to access all CRUD operations</figcaption>
         </figure>
         <figure>
             <img src="media/product_line_item/update.png">
@@ -64,45 +63,45 @@
         </figure>
         <figure>
             <img src="media/product_line_item/line_item_add.png">
-            <figcaption>The view that allows a user to add a line item on a product</figcaption>
+            <figcaption>The add line item view</figcaption>
         </figure>
         <figure>
             <img src="media/product_line_item/search.png">
-            <figcaption>The main view after the user has entered search criteria to filter the products and line items</figcaption>
+            <figcaption>The search view for filtering products and line items</figcaption>
         </figure>
         <h2>Code Samples</h2>
         <figure>
             <code><pre>public static ArrayList&lt;Object&gt; searchProducts(
     String searchCode, String searchDescription, String searchPrice) {
     String sql = """
-            WITH ValidCodes AS (
-                SELECT ProductCode
-                FROM Products
-                WHERE ProductCode LIKE ? AND
-                    Description LIKE ? ESCAPE '~' AND
-                    CAST(Price AS TEXT) LIKE ?
-            )
-            SELECT ProductCode,
-                0 Type,
-                Description,
-                Price,
-                NULL LineItemID,
-                NULL InvoiceID,
-                NULL Quantity
+        WITH ValidCodes AS (
+            SELECT ProductCode
             FROM Products
-            WHERE ProductCode IN ValidCodes
-            UNION
-            SELECT ProductCode,
-                1,
-                NULL,
-                NULL,
-                LineItemID,
-                InvoiceID,
-                Quantity
-            FROM LineItems
-            WHERE ProductCode IN ValidCodes
-            ORDER BY ProductCode, Type, LineItemID;
-            """;
+            WHERE ProductCode LIKE ? AND
+                Description LIKE ? ESCAPE '~' AND
+                CAST(Price AS TEXT) LIKE ?
+        )
+        SELECT ProductCode,
+            0 Type,
+            Description,
+            Price,
+            NULL LineItemID,
+            NULL InvoiceID,
+            NULL Quantity
+        FROM Products
+        WHERE ProductCode IN ValidCodes
+        UNION
+        SELECT ProductCode,
+            1,
+            NULL,
+            NULL,
+            LineItemID,
+            InvoiceID,
+            Quantity
+        FROM LineItems
+        WHERE ProductCode IN ValidCodes
+        ORDER BY ProductCode, Type, LineItemID;
+        """;
 
     try (Connection connection = getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -149,7 +148,7 @@
     return productLineItemList;
 }</pre></code>
             <figcaption>
-                The data layer code that handles object-relational-mapping for the main products / line items list
+                The data layer code that handles object-relational mapping for the products / line items list
             </figcaption>
         </figure>
         <figure>
@@ -202,7 +201,7 @@
     
     return new Product(code, description, price);
 }</pre></code>
-            <figcaption>Presentation layer code that handles product information input and validation</figcaption>
+            <figcaption>The code that handles product information input and validation</figcaption>
         </figure>
         <figure>
             <code><pre>@Override
@@ -234,7 +233,7 @@ public void start(Stage stage) {
     productInputGrid.add(productInputPriceField, 1, 2);
     
     appGrid.add(productInputGrid, 0, 0);</pre></code>
-        <figcaption>A portion of the presentation layer code that sets up the main view</figcaption>
+        <figcaption>A portion of the presentation layer code that initializes the main view</figcaption>
         </figure>
     </main>
     <footer class="footer">

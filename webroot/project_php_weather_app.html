@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -40,10 +40,9 @@
     <main class="cis-syllabi">
         <h1>Weather App</h1>
         <p>
-            This application allows a user to keep daily log entries for the weather in major cities in South Dakota.
-            All entries can be viewed on the home page.
-            Entries can be added or deleted.
-            There is also a page for viewing the locations for weather entries.
+            This application allows a user to keep daily weather log entries for major cities in South Dakota.
+            The home page provides a list of all entries, and entries can be added or deleted.
+            A locations page provides a list of all available cities.
             This program was created individually to fulfill the requirements of a PHP course.
         </p>
         <p>The technologies include:</p>
@@ -57,11 +56,11 @@
         </figure>
         <figure>
             <img src="media/php_weather_app/add.png">
-            <figcaption>The page for adding a weather log entry</figcaption>
+            <figcaption>The add weather log entry page</figcaption>
         </figure>
         <figure>
             <img src="media/php_weather_app/locations.png">
-            <figcaption>The location page that lists cities in South Dakota</figcaption>
+            <figcaption>The locations page that lists cities in South Dakota</figcaption>
         </figure>
         <h2>Code Samples</h2>
         <figure>
@@ -99,7 +98,7 @@ $statement->execute();
 $logs = $statement->fetchAll();
 $statement->closeCursor();</pre></code>
             <figcaption>
-                The routing and data access code on the home page that handles deleting and listing entries
+                The routing and data access code that handles listing and deleting log entries on the home page
             </figcaption>
         </figure>
         <figure>
@@ -184,7 +183,7 @@ $statement-&gt;closeCursor();
     &lt;/table&gt;
 &lt;/main&gt;
 &lt;?php include 'footer.php'; ?&gt;</pre></code>
-            <figcaption>The code for the locations list page</figcaption>
+            <figcaption>The locations list page</figcaption>
         </figure>
     </main>
     <footer class="footer">

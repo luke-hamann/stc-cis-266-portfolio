@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -40,9 +40,16 @@
     <main class="cis-syllabi">
         <h1>Products SOAP API with Database Emulator</h1>
         <p>
-            This application emulates a database of products and provides a SOAP API for accessing them.
-            Naturally, this includes the business classes and the SOAP web service itself.
-            However, it also includes JSP pages for testing the business classes as well as a SOAP web service test client.
+            This application emulates a database of products and provides an API for accessing them.
+            This includes:
+        </p>
+        <ul>
+            <li>Business classes</li>
+            <li>JSP testers for the business classes</li>
+            <li>A SOAP API</li>
+            <li>A SOAP web service test client</li>
+        </ul>
+        <p>
             The program was completed as an assignment to fulfill the requirements of a web services course.
         </p>
         <p>
@@ -66,11 +73,11 @@
         </figure>
         <figure>
             <img src="media/web_services_unit_3_ex_2/test_client_create_object.png">
-            <figcaption>The web service test client after verifying the instantiation of the product database emulator</figcaption>
+            <figcaption>The web service test client after verifying the creation of the product database emulator</figcaption>
         </figure>
         <figure>
             <img src="media/web_services_unit_3_ex_2/api_tester.png">
-            <figcaption>The JSP page for testing the product database emulator API</figcaption>
+            <figcaption>The output of the JSP for testing the product database emulator API</figcaption>
         </figure>
         <h2>Code Samples</h2>
         <figure>
@@ -129,8 +136,8 @@ public class ProductDB
             <code><pre>package db_emulator;
 
 /* The "Application Interface"/API class "exposes" those methods that you wish
-    * clients (often from outside organizations/companies) to be able to access / utilize.
-    */
+* clients (often from outside organizations/companies) to be able to access / utilize.
+*/
 
 public class ProductDB_API {
     
@@ -156,8 +163,8 @@ public class ProductDB_API {
     {
         String rValue = "";
         try{
-        Product aProduct = ProductDB.getProduct(aProductCode);
-        rValue = aProduct.toString();	
+            Product aProduct = ProductDB.getProduct(aProductCode);
+            rValue = aProduct.toString();	
         }
         catch(Exception err)
         {
@@ -170,8 +177,8 @@ public class ProductDB_API {
     public Product getProductObject(String aProductCode)
     {
         try{
-        Product aProduct = ProductDB.getProduct(aProductCode);
-        return aProduct;	
+            Product aProduct = ProductDB.getProduct(aProductCode);
+            return aProduct;	
         }
         catch(Exception err)
         {
@@ -184,36 +191,6 @@ public class ProductDB_API {
 
 }</pre></code>
             <figcaption>The product database emulator API class with methods acting as SOAP operations</figcaption>
-        </figure>
-        <figure>
-            <code><pre>&lt;!DOCTYPE HTML&gt;
-&lt;%@page import=&quot;db_emulator.*&quot;%&gt;
-&lt;%@page language=&quot;java&quot;
-    contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;ProductDB_API Tester&lt;/title&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;% 
-    ProductDB_API o1 = new ProductDB_API(); //create object o1 from Product DB API class
-    o1.createProductDB_Object(); //create a static ProductDB object using method in o1
-    String strProduct = o1.getProduct(&quot;mcb2&quot;); //get the properties of a product object &amp; store in a String 
-    out.print(&quot;Output from ProductDB_API getProduct(mcb2) method: &lt;br /&gt;&quot; + strProduct); //display the String returned by getProduct( ) method
-
-    //try to get properties from a product not in DB table
-    Product aProduct = o1.getProductObject(&quot;xxxx&quot;); //get the properties of a product object &amp; store in a String
-    aProduct.setDescription(&quot;This is the Description of Product xxxx&quot;); 
-    out.print(&quot;&lt;br /&gt;&lt;br /&gt;Output from ProductDB_API getProduct(xxxx).getDescription( ) method: &lt;br /&gt;&quot; + aProduct.getDescription()); //display the String returned by getProduct( ) method
-
-%&gt;
-
-
-&lt;/body&gt;
-&lt;/html&gt;</pre></code>
-            <figcaption>The product database emulator API class tester JSP page</figcaption>
         </figure>
         <figure>
             <code><pre>&lt;!DOCTYPE HTML&gt;
@@ -241,7 +218,36 @@ ProductDB Class Tester: &lt;br /&gt;&lt;br /&gt;
 
 &lt;/body&gt;
 &lt;/html&gt;</pre></code>
-            <figcaption>The product database emulator class tester JSP page</figcaption>
+            <figcaption>The product database emulator class JSP tester</figcaption>
+        </figure>
+        <figure>
+            <code><pre>&lt;!DOCTYPE HTML&gt;
+&lt;%@page import=&quot;db_emulator.*&quot;%&gt;
+&lt;%@page language=&quot;java&quot;
+    contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ProductDB_API Tester&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;% 
+    ProductDB_API o1 = new ProductDB_API(); //create object o1 from Product DB API class
+    o1.createProductDB_Object(); //create a static ProductDB object using method in o1
+    String strProduct = o1.getProduct(&quot;mcb2&quot;); //get the properties of a product object &amp; store in a String 
+    out.print(&quot;Output from ProductDB_API getProduct(mcb2) method: &lt;br /&gt;&quot; + strProduct); //display the String returned by getProduct( ) method
+
+    //try to get properties from a product not in DB table
+    Product aProduct = o1.getProductObject(&quot;xxxx&quot;); //get the properties of a product object &amp; store in a String
+    aProduct.setDescription(&quot;This is the Description of Product xxxx&quot;); 
+    out.print(&quot;&lt;br /&gt;&lt;br /&gt;Output from ProductDB_API getProduct(xxxx).getDescription( ) method: &lt;br /&gt;&quot; + aProduct.getDescription()); //display the String returned by getProduct( ) method
+
+%&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+            <figcaption>The product database emulator API class JSP tester</figcaption>
         </figure>
     </main>
     <footer class="footer">

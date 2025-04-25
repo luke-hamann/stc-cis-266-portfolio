@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -41,9 +41,9 @@
         <h1>Car Dealership Data Website</h1>
         <p>
             This application allows a user to manipulate data relating to a car dealership, including cars, customers, and salespersons.
-            Data can be manipulated using AJAJ-enhanced forms that perform CRUD operations without page reloads.
-            It also includes testers for viewing all records and the output of JSON endpoints.
-            It was completed as a group project for a web services class.
+            AJAJ-enhanced forms perform CRUD operations without page reloads.
+            It also includes testers for viewing all records as well as the output of JSON endpoints.
+            The website was completed as a group project for a web services class.
         </p>
         <p>
             The technologies include:
@@ -64,7 +64,7 @@
         </figure>
         <figure>
             <img src="media/web_services_scrum_3/testers.png">
-            <figcaption>The testers page that displays all rows of all tables</figcaption>
+            <figcaption>The testers page that displays all records</figcaption>
         </figure>
         <figure>
             <img src="media/web_services_scrum_3/read_salesperson_tester.png">
@@ -112,7 +112,7 @@ private function update($tableName, $values) {
         die('Database error: ' . $e-&gt;getMessage());
     }
 }</pre></code>
-            <figcaption>The data layer code that handles generic SQL insert and update statements</figcaption>
+            <figcaption>The data layer code that handles SQL insert and update statements</figcaption>
         </figure>
         <figure>
             <code><pre>&lt;?php
@@ -140,7 +140,7 @@ if ($_POST) {
     print(json_encode($array));
 }
 ?&gt;</pre></code>
-            <figcaption>The JSON endpoint that handles updates to salesperson information</figcaption>
+            <figcaption>The JSON endpoint that updates salesperson information</figcaption>
         </figure>
         <figure>
             <code><pre>&lt;script type=&quot;module&quot;&gt;

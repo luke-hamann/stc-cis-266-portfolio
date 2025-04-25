@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -42,15 +42,15 @@
         <p>
             This application was a group project for an ASP.NET Core MVC class.
             The goal was to create a website for managing technical support tickets.
-            This includes pages for managing products, technicians, customers, incidents, and registrations.
-            Additionally, there is authentication and authorization for certain administrative functionality.
+            It includes pages for managing products, technicians, customers, incidents, and registrations.
+            Additionally, some functionality requires a login.
         </p>
         <p>
             My responsibilities included:
         </p>
         <ul>
-            <li>Writing most components relating to product management pages</li>
-            <li>Writing some components relating to validation on customer management pages</li>
+            <li>Writing most components relating to the product management pages</li>
+            <li>Writing some components relating to validation on the customer management pages</li>
             <li>Refactoring the data layer to use repositories (and make it easier to unit test)</li>
             <li>Implementing role-based administrative access</li>
         </ul>
@@ -58,6 +58,8 @@
         <ul>
             <li>C#</li>
             <li>ASP.NET Core MVC</li>
+            <li>Entity Framework Core</li>
+            <li>ASP.NET Core Identity</li>
             <li>Razor pages</li>
             <li>Bootstrap</li>
             <li>jQuery</li>
@@ -72,7 +74,7 @@
         </figure>
         <figure>
             <img src="media/sportspro/customer_add.png">
-            <figcaption>The customer add/edit form</figcaption>
+            <figcaption>The customer add/edit form with validation messages</figcaption>
         </figure>
         <figure>
             <img src="media/sportspro/register.png">
@@ -115,7 +117,7 @@ namespace SportsPro.Controllers
         }
     }
 }</pre></code>
-            <figcaption>This is an example of an action method that handles remote validation for checking that an email address is not duplicate.</figcaption>
+            <figcaption>The remote validation action method for checking that a customer's email address is unique</figcaption>
         </figure>
         <figure>
 <code><pre>@model Product
@@ -154,7 +156,7 @@ namespace SportsPro.Controllers
         &lt;a asp-action=&quot;List&quot; class=&quot;btn btn-primary&quot;&gt;Cancel&lt;/a&gt;
     &lt;/div&gt;
 &lt;/form&gt;</pre></code>
-            <figcaption>This is the Razor view for the product add/edit form.</figcaption>
+            <figcaption>The product add/edit form Razor view</figcaption>
         </figure>
         <figure>
 <code><pre>using System.ComponentModel.DataAnnotations;
@@ -179,7 +181,7 @@ namespace SportsPro.Models
     }
 }
 </pre></code>
-            <figcaption>This is the view model for the registration form</figcaption>
+            <figcaption>The view model for the registration form</figcaption>
         </figure>
     </main>
     <footer class="footer">

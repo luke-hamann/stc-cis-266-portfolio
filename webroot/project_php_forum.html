@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -40,12 +40,11 @@
     <main class="cis-syllabi">
         <h1>Forum Website</h1>
         <p>
-            This project is a discussion website.
-            Discussions are divided into separate "forums."
+            This project is a discussion website with multiple forums.
             Users can login to post and comment.
             Several administrative functions are also available for managing users and changing passwords.
             The code follows a highly modular, MVC design pattern.
-            The application was created individually as a PHP final project.
+            It was created individually as a PHP final project.
         </p>
         <p>
             The technologies include:
@@ -56,22 +55,26 @@
             <li>Bootstrap</li>
         </ul>
         <p>
+            This application is available as a live demo.
+            Please contact me to request credentials.
+        </p>
+        <p>
             <a href="https://forum.luke.hamann.me/" class="live-demo-button">&#x25B6; Live Demo</a>
         </p>
         <figure>
-            <img src="media/php_final/main.png">
-            <figcaption>The home page with a list a recent posts across all forums</figcaption>
+            <img src="media/php_forum/main.png">
+            <figcaption>The home page with a list of recent posts across all forums</figcaption>
         </figure>
         <figure>
-            <img src="media/php_final/post.png">
-            <figcaption>The page for reading a post and adding a comment</figcaption>
+            <img src="media/php_forum/post.png">
+            <figcaption>The post page for viewing a post and adding comments</figcaption>
         </figure>
         <figure>
-            <img src="media/php_final/profile.png">
-            <figcaption>The user profile page that shows all a user's posts and comments</figcaption>
+            <img src="media/php_forum/profile.png">
+            <figcaption>The user profile page for viewing all a user's posts and comments</figcaption>
         </figure>
         <figure>
-            <img src="media/php_final/users_admin.png">
+            <img src="media/php_forum/users_admin.png">
             <figcaption>The users list as viewed by an administrator</figcaption>
         </figure>
         <h2>Code Samples</h2>
@@ -163,15 +166,10 @@ if ($model-&gt;mode == 'Add') {
 &lt;/div&gt;
 
 &lt;?php include('./views/shared/footer.php'); ?&gt;</pre></code>
-            <figcaption>The post form add/edit view</figcaption>
+            <figcaption>The post add/edit form view</figcaption>
         </figure>
         <figure>
-            <code><pre>&lt;?php
-/**
-* Title: Comment Database
-* Purpose: To view, add, update, and delete comments
-*/
-class CommentDB {
+            <code><pre>class CommentDB {
     private const BASE_QUERY = '
         SELECT
             Comments.id,
@@ -203,11 +201,64 @@ class CommentDB {
                 $row['userIsGhost']
             )
         );
+    }
+
+    // Convert SQL result rows to a list of comment objects
+    public static function convertRowsToComments($rows) {
+        $comments = [];
+        foreach ($rows as $row) {
+            $comments[] = self::convertRowToComment($row);
+        }
+        return $comments;
+    }
+
+    // Get a comment by its id
+    public static function getComment(int $id) {
+        $query = self::BASE_QUERY . 'WHERE Comments.id = :id';
+        $rows = Database::execute($query, [':id' => $id]);
+        if (count($rows) == 0) return null;
+        return self::convertRowToComment($rows[0]);
     }</pre></code>
             <figcaption>A snippet of the data layer code that handles comments</figcaption>
         </figure>
         <figure>
-            <code><pre>// Display the list of all users
+            <code><pre>&lt;?php
+/**
+* Title: Home Controller
+* Purpose: To display the home page, forums and forum pages, and users and user pages
+*/
+
+require_once('./models/viewModels/homeViewModel.php');
+require_once('./models/viewModels/forumsViewModel.php');
+require_once('./models/viewModels/forumViewModel.php');
+require_once('./models/viewModels/usersViewModel.php');
+require_once('./models/viewModels/userViewModel.php');
+require_once('./models/viewModels/postViewModel.php');
+
+// Display the home page with recent posts from all forums
+if ($action == 'home' &amp;&amp; $isGetRequest) {
+    $model = new HomeViewModel(PostDB::getRecentPosts(), $currentUser);
+    include('./views/home/home.php');
+    exit();
+}
+
+// Display the list of all forums
+if ($action == 'forums' &amp;&amp; $isGetRequest) {
+    $model = new ForumsViewModel(ForumDB::getForums(), $currentUser);
+    include('./views/home/forums.php');
+    exit();
+}
+
+// Display posts within a given forum
+if ($action == 'forum' &amp;&amp; $isGetRequest) {
+    $id = FILTER_INPUT(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $forum = getObjectOr404('forum', $id);
+    $model = new ForumViewModel($forum, $currentUser);
+    include('./views/home/forum.php');
+    exit();
+}
+
+// Display the list of all users
 if ($action == 'users' &amp;&amp; $isGetRequest) {
     $model = new UsersViewModel(UserDB::getUsers(), $currentUser);
     include('./views/home/users.php');
@@ -244,7 +295,7 @@ if ($action == 'user' &amp;&amp; $isGetRequest) {
 }
 
 ?&gt;</pre></code>
-            <figcaption>A snippet of the home controller that handles the user list and profile pages</figcaption>
+            <figcaption>The home controller</figcaption>
         </figure>
     </main>
     <footer class="footer">

@@ -26,7 +26,7 @@
                             <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
                             <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
                             <li><a href="project_php_weather_app.html">Weather App</a></li>
-                            <li><a href="project_php_final.html">Forum Website</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
                             <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
                             <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
                             <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
@@ -41,21 +41,23 @@
         <h1>RESTful AJAJ Service and Testers</h1>
         <p>
             This is a simple (test) application that uses PHP to work with a MySQL table.
-            Records from a table can be read all at once or one at a time.
-            Several tester pages for checking database operations are also included.
-            A client form page also uses AJAJ to read records without a page reload.
-            This program was a piece of homework for a web services class.
+            Records can be displayed individually or listed by table.
+            Several tester pages check database operations.
+            A client form page uses AJAJ to read records without a page reload.
+            This program was homework for a web services class.
         </p>
         <p>
             The technologies include:
         </p>
         <ul>
             <li>PHP</li>
+            <li>MySQL</li>
+            <li>JSON</li>
             <li>AJAJ</li>
         </ul>
         <figure>
             <img src="media/web_services_unit_2_ex_3/main.png">
-            <figcaption>The "get all records" AJAJ client page</figcaption>
+            <figcaption>The "get all records" AJAJ client</figcaption>
         </figure>
         <figure>
             <img src="media/web_services_unit_2_ex_3/oop_testers.png">
@@ -91,7 +93,7 @@ $rValue = &quot;List of Records from &quot; . $table . &quot; table&lt;br /&gt;&
 print($rValue);
 
 ?&gt;</pre></code>
-            <figcaption>The service provider code that displays all records</figcaption>
+            <figcaption>The service provider that displays all records within a given table</figcaption>
         </figure>
         <figure>
             <code><pre>&lt;?php
@@ -196,7 +198,7 @@ $('#target').submit(function(event) {
 &lt;/body&gt;
 &lt;/html&gt;</pre></code>
             <figcaption>
-                The HTML form and client-side code for handling the "get all records" AJAJ client
+                The HTML form and client-side code for the "get all records" AJAJ client
             </figcaption>
         </figure>
     </main>
