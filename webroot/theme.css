@@ -10,6 +10,8 @@
 :root {
     --color-text: #28261D;
     --color-sky: #B3BFD1;
+    --color-light: white;
+    --color-danger: red;
 
     color: var(--color-text);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -66,12 +68,10 @@ a {
     white-space: nowrap;
     width: 5rem;
     text-align: center;
-    max-width: 5rem;
-
 
     details ul {
         list-style-type: none;
-        background-color: white;
+        background-color: var(--color-light);
         position: absolute;
         left: 0;
         right: 0;
@@ -127,9 +127,11 @@ a {
 }
 
 .footer {
-    height: 25vh;
+    --height: 25vh;
+
+    height: var(--height);
     text-align: center;
-    line-height: 25vh;
+    line-height: var(--height);
 }
 
 .h1 {
@@ -181,9 +183,9 @@ a {
         }
 
         .live-demo-badge {
-            color: white;
             display: block;
-            background-color: red;
+            color: var(--color-light);
+            background-color: var(--color-danger);
             border-radius: 5pt;
             position: absolute;
             right: 3%;
@@ -266,8 +268,8 @@ a {
     .live-demo-button {
         display: block;
         text-align: center;
-        background-color: red;
-        color: white;
+        background-color: var(--color-danger);
+        color: var(--color-light);
         font-weight: bold;
         font-size: xx-large;
         padding: 1rem;
@@ -285,8 +287,10 @@ a {
 }
 
 .back-to-top {
+    --height: 2rem;
+
     display: block;
-    height: 2rem;
+    height: var(--height);
     width: 4rem;
     border-radius: 5pt;
     position: fixed;
@@ -295,7 +299,16 @@ a {
     text-decoration: none;
     border: 1pt solid;
     text-align: center;
-    line-height: 2rem;
+    line-height: var(--height);
     color: initial;
-    background-color: white;
+    background-color: var(--color-light);
+    transition: scale 100ms;
+
+    &:hover {
+        scale: 1.1;
+    }
+
+    &:active {
+        scale: 0.9;
+    }
 }
