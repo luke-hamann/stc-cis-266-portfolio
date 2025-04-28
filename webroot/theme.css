@@ -22,6 +22,10 @@ a {
     color: var(--color-text);
 }
 
+b {
+    font-weight: bold;
+}
+
 .hero-banner {
     background-image: url('./media/devils_tower.jpg');
     background-attachment: fixed;
@@ -137,6 +141,42 @@ a {
 .h1 {
     font-size: 3rem;
     margin: 2rem;
+}
+
+.center {
+    text-align: center;
+}
+
+.bio {
+    display: flex;
+
+    @media (max-width: 50rem) {
+        flex-direction: column;
+    }
+
+    gap: 2rem;
+    margin: 4rem auto;
+    max-width: 50rem;
+    border: 2pt solid var(--color-text);
+    border-radius: 5pt;
+    padding: 2rem;
+    box-shadow: 0 0 5pt var(--color-text);
+
+    .bio-image-container {
+        text-align: center;
+    }
+
+    img {
+        border-radius: 1000pt;
+    }
+
+    p:not(:first-of-type), ul {
+        margin-top: 1rem;
+    }
+
+    ul {
+        padding-left: 1rem;
+    }
 }
 
 .gallery {
