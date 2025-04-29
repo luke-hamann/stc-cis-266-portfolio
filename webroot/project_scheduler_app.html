@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduler App</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <a href=".">Home</a>
+                </li>
+                <li class="header-li">
+                    <a href="LukeHamannResume.pdf">Resume.pdf</a>
+                </li>
+                <li class="header-li">
+                    <a href="CIS_Syllabi.html">CIS Syllabi</a>
+                </li>
+                <li class="header-li">
+                    <details>
+                        <summary>Projects</summary>
+                        <ul>
+                            <li><a href="project_scheduler_app.html">Scheduler App</a></li>
+                            <li><a href="project_java_product_manager.html">Product Line Item Manager</a></li>
+                            <li><a href="project_c_sharp_sportspro.html">SportsPro Technical Support Website</a></li>
+                            <li><a href="project_php_weather_app.html">Weather App</a></li>
+                            <li><a href="project_php_forum.html">Forum Website</a></li>
+                            <li><a href="project_web_services_unit_2_ex_3.html">RESTful AJAJ Service and Testers</a></li>
+                            <li><a href="project_web_services_scrum_3.html">Car Dealership Data Website</a></li>
+                            <li><a href="project_web_services_unit_3_ex_2.html">Products SOAP API with Database Emulator</a></li>
+                            <li><a href="project_web_services_scrum_4.html">Cats SOAP API</a></li>
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cis-syllabi">
+        <h1>Scheduler App</h1>
+        <p>
+            This is a web application for creating team member schedules.
+            The features include:
+        </p>
+        <ul>
+            <li>Managing team members, including their profile information, shift preferences, availability, and unavailability</li>
+            <li>Creating "shift contexts" that time slots can exist within</li>
+            <li>Creating swatches to color code daily schedule notes</li>
+            <li>Working with time slots, notes, and assignees</li>
+            <li>Viewing rich time slot assignee recommendations and schedule warnings</li>
+            <li>Exporting schedules to Excel</li>
+        </ul>
+        <p>
+            The backend is written in TypeScript with an MVC architecture.
+            It relies upon MySQL, a database driver, and a Microsoft Excel library for exports.
+            The frontend is a multi-page application written using Nunjucks and Tailwind CSS.
+            It does use some vanilla AJAX in some places.
+        </p>
+        <p>
+            The application was created as a capstone group project with <a href="https://github.com/AmStaples">Aaron Staples</a> and <a href="https://github.com/MalachiHarris">Malachi Harris</a>.
+            Additional <a href="https://luke-hamann.github.io/stc-cis-248/docs/">systems documentation</a> and <a href="https://luke-hamann.github.io/stc-cis-248/guides/">user guides</a> are also available on GitHub.
+        </p>
+        <p>
+            The technologies included:
+        </p>
+        <ul>
+            <li>Deno</li>
+            <li>MySQL</li>
+            <li>Tailwind CSS</li>
+            <li>AJAX</li>
+        </ul>
+        <p>
+            The approach included:
+        </p>
+        <ul>
+            <li>Identifying project ideas</li>
+            <li>Selecting a project idea</li>
+            <li>Developing a project management Gannt Chart</li>
+            <li>Identifying stakeholders</li>
+            <li>Collecting and documenting user stories</li>
+            <li>Creating ERDs</li>
+            <li>Identifying application levels</li>
+            <li>Creating DFDs</li>
+            <li>Implementing the database with sample data</li>
+            <li>Creating wireframes and user interface mockups</li>
+            <li>Identifying the system components</li>
+            <li>Implementing a prototype</li>
+            <li>Testing the application manually</li>
+            <li>Writing automated tests</li>
+            <li>Developing task plans based on test results</li>
+            <li>Documenting the codebase and systems</li>
+            <li>Writing and releasing user guides</li>
+            <li>Deploying the application for use by stakeholders</li>
+            <li>Testing the application with stakeholders</li>
+            <li>Documenting feedback and new user stories</li>
+            <li>Developing task plans based on new user stories</li>
+            <li>Implementing feature backlog</li>
+            <li>Drafting, rehearsing, and presenting a project presentation</li>
+            <li>Releasing the improved version of the application to stakeholders</li>
+        </ul>
+        <p>
+            The development tools included:
+        </p>
+        <ul>
+            <li>Visual Studio Code</li>
+            <li>phpMyAdmin</li>
+            <li>dbdiagram.io</li>
+            <li>GraphViz</li>
+            <li>GitHub Actions</li>
+            <li>Docker</li>
+        </ul>
+        <h2>Presentation</h2>
+        <embed src="project_scheduler_app_presentation.pdf" type="application/pdf">
+        <h2>Demo Videos</h2>
+        <figure>
+            <video controls>
+                <source src="media/scheduler_app/demo_1.mp4" type="video/mp4">
+            </video>
+            <figcaption>A demonstration of the team member, shift context, and color management features</figcaption>
+        </figure>
+        <figure>
+            <video controls>
+                <source src="media/scheduler_app/demo_2.mp4" type="video/mp4">
+            </video>
+            <figcaption>A demonstration of the schedule and time slot management features</figcaption>
+        </figure>
+        <h2>Screenshots</h2>
+        <figure>
+            <img src="media/scheduler_app/schedule_week.png">
+            <figcaption>The schedule week editor table</figcaption>
+        </figure>
+        <figure>
+            <img src="media/scheduler_app/schedule_year.png">
+            <figcaption>The schedule year page</figcaption>
+        </figure>
+        <figure>
+            <img src="media/scheduler_app/schedule_warnings.png">
+            <figcaption>The schedule week editor warnings</figcaption>
+        </figure>
+        <figure>
+            <img src="media/scheduler_app/time_slot_edit.png">
+            <figcaption>The edit time slot form with assignee recommendations</figcaption>
+        </figure>
+        <figure>
+            <img src="media/scheduler_app/availability_list.png">
+            <figcaption>The team member availability list page</figcaption>
+        </figure>
+        <figure>
+            <img src="media/scheduler_app/excel_example.png">
+            <figcaption>An example Excel schedule export</figcaption>
+        </figure>
+        <h2>Code Samples</h2>
+        <figure>
+            <code><pre>// build a new array to transpose the old one into
+const targetArray: (ScheduleCell | null)[][] = [];
+for (let i = 0; i &lt; colCount; i++) {
+  const row: (ScheduleCell | null)[] = [];
+  for (let j = 0; j &lt; rowCount; j++) {
+    row.push(null);
+  }
+  targetArray.push(row);
+}
+        
+// transpose old array into new array
+for (let rowNum = 0; rowNum &lt; rowCount; rowNum++) {
+  for (let colNum = 0; colNum &lt; colCount; colNum++) {
+    const timeSlot = timeSlotsByDay[rowNum][colNum];
+        
+    let newCell: ScheduleCell;
+        
+    if (timeSlot) {
+      newCell = { type: &quot;TimeSlot&quot;, content: timeSlot };
+    } else {
+      const startDateTime = new Date(dateList[rowNum]);
+      startDateTime.setHours(
+        Number(timeSlotGroup.startTime.substring(0, 2)),
+      );
+      startDateTime.setMinutes(
+        Number(timeSlotGroup.startTime.substring(3, 5)),
+      );
+        
+      const endDateTime = new Date(dateList[rowNum]);
+      endDateTime.setHours(
+        Number(timeSlotGroup.endTime.substring(0, 2)),
+      );
+      endDateTime.setMinutes(
+        Number(timeSlotGroup.endTime.substring(3, 5)),
+      );
+        
+      const timeSlotPossibility = new TimeSlotPossibility(
+        timeSlotGroup.shiftContextId,
+        startDateTime,
+        endDateTime,
+        timeSlotGroup.requiresAdult,
+      );
+        
+        newCell = {
+          type: &quot;TimeSlotPossibility&quot;,
+          content: timeSlotPossibility,
+        };
+      }
+        
+      // Swapped row and column to transpose array
+      targetArray[colNum][rowNum] = newCell;
+    }
+  }</pre></code>
+            <figcaption>A portion of the repository code that builds the schedule week table</figcaption>
+        </figure>
+        <figure>
+            <code><pre>  /** Constructs a view model using incoming form data
+   * @param request The incoming HTTP request
+   * @returns The view model
+   */
+  public static async fromRequest(request: Request) {
+    const formData = MapWrapper.fromFormData(await request.formData());
+
+    const timeSlotId = formData.getInt(&quot;timeSlotId&quot;) ?? 0;
+    const shiftContextId = formData.getInt(&quot;shiftContextId&quot;) ?? 0;
+    const date = formData.getDate(&quot;date&quot;);
+    const startTime = formData.getTime(&quot;startTime&quot;);
+    const endTime = formData.getTime(&quot;endTime&quot;);
+    const requiresAdult = formData.getBool(&quot;requiresAdult&quot;);
+    const teamMemberId = formData.getInt(&quot;teamMemberId&quot;);
+    const note = formData.getString(&quot;note&quot;);
+    const colorId = formData.getInt(&quot;colorId&quot;);
+    const newColorHex = formData.getColorHex(&quot;newColorHex&quot;);
+    const newColorName = formData.getString(&quot;newColorName&quot;);
+
+    const betterDate = date ? BetterDate.fromDate(date) : null;
+
+    let startDateTime = null;
+    if (betterDate != null &amp;&amp; startTime != &quot;&quot;) {
+      startDateTime = new Date(betterDate.toDateString() + &quot;T&quot; + startTime);
+    }
+
+    let endDateTime = null;
+    if (betterDate != null &amp;&amp; endTime != &quot;&quot;) {
+      endDateTime = new Date(betterDate.toDateString() + &quot;T&quot; + endTime);
+    }
+
+    const timeSlot = new TimeSlot(
+      timeSlotId,
+      shiftContextId,
+      null,
+      startDateTime,
+      endDateTime,
+      requiresAdult,
+      teamMemberId,
+      null,
+      note,
+      colorId,
+      null,
+    );
+
+    let newColor = null;
+    if (colorId == 0) {
+      newColor = new Color(0, newColorName, newColorHex);
+    }
+
+    const cancelLink = formData.getLocalPath(&quot;cancelLink&quot;);
+
+    return new TimeSlotEditViewModel(
+      [],
+      [],
+      [],
+      [],
+      timeSlot,
+      newColor,
+      true,
+      [],
+      cancelLink,
+    );
+  }
+}</pre></code>
+            <figcaption>The method that converts form data to a time slot edit view model</figcaption>
+        </figure>
+        <figure>
+            <code><pre>/** Controls the team member page */
+export default class TeamMemberController extends Controller {
+  /** The team members repository */
+  private _teamMembers: ITeamMemberRepository;
+
+  /** Constructs the controller using a team member repository
+   * @param teamMemberRepository The team members repository
+   */
+  constructor(teamMemberRepository: ITeamMemberRepository) {
+    super();
+    this._teamMembers = teamMemberRepository;
+    this.routes = [
+      { method: &quot;GET&quot;, pattern: &quot;/team-members/&quot;, action: this.list },
+      { method: &quot;GET&quot;, pattern: &quot;/team-member/(\\d+)/&quot;, action: this.profile },
+      { method: &quot;GET&quot;, pattern: &quot;/team-members/add/&quot;, action: this.addGet },
+      { method: &quot;POST&quot;, pattern: &quot;/team-members/add/&quot;, action: this.addPost },
+      {
+        method: &quot;GET&quot;,
+        pattern: &quot;/team-member/(\\d+)/edit/&quot;,
+        action: this.editGet,
+      },
+      {
+        method: &quot;POST&quot;,
+        pattern: &quot;/team-member/(\\d+)/edit/&quot;,
+        action: this.editPost,
+      },
+      {
+        method: &quot;GET&quot;,
+        pattern: &quot;/team-member/(\\d+)/delete/&quot;,
+        action: this.deleteGet,
+      },
+      {
+        method: &quot;POST&quot;,
+        pattern: &quot;/team-member/(\\d+)/delete/&quot;,
+        action: this.deletePost,
+      },
+    ];
+  }
+
+  /** Gets the team member list page
+   * @param context The application context
+   * @returns The response
+   */
+  public async list(context: Context): Promise&lt;ResponseWrapper&gt; {
+    const teamMembers = await this._teamMembers.list();
+    const model = new TeamMembersViewModel(teamMembers);
+    return this.HTMLResponse(context, &quot;./views/teamMember/list.html&quot;, model);
+  }
+
+  /** Gets the team member profile page
+   * @param context The application context
+   * @returns The response
+   */
+  public async profile(context: Context): Promise&lt;ResponseWrapper&gt; {
+    const id = parseInt(context.match[1]);
+    if (isNaN(id)) return this.NotFoundResponse(context);
+
+    const teamMember = await this._teamMembers.get(id);
+    if (teamMember == null) return this.NotFoundResponse(context);
+
+    const model = new TeamMemberEditViewModel(
+      false,
+      [],
+      teamMember,
+    );
+    return this.HTMLResponse(context, &quot;./views/teamMember/profile.html&quot;, model);
+  }</pre></code>
+            <figcaption>The section of the team member controller that handles route patterns, the team member list, and profile pages</figcaption>
+        </figure>
+        <figure>
+            <code><pre>{% if type == &quot;TimeSlotGroup&quot; %}
+  &lt;p&gt;{{ data.startTime }} to {{ data.endTime }}&lt;/p&gt;
+  &lt;p&gt;{{ &quot;18+&quot; if data.requiresAdult }}&lt;/p&gt;
+{% endif %}
+
+{% if type == &quot;TimeSlotPossibility&quot; %}
+  &lt;p class=&quot;flex justify-center&quot;&gt;
+    &lt;a href=&quot;/schedule/time-slot/add/shift-context/{{ data.shiftContextId }}/on/{{ formatDate(data.startDateTime, '/') }}/from/{{ formatTime(data.startDateTime) }}/to/{{ formatTime(data.endDateTime) }}/{{ 'adult-only/' if data.requiresAdult }}&quot; class=&quot;block p-1 w-fit border rounded&quot;&gt;&amp;plus; New&lt;/a&gt;
+  &lt;/p&gt;
+{% endif %}
+
+{% if type == &quot;TimeSlot&quot; %}
+  {% set timeSlotWarnings = model.warnings.getTimeSlotWarnings(data.id) %}
+
+  &lt;div class=&quot;relative&quot;&gt;
+    &lt;a id=&quot;time_slot_{{ data.id }}&quot; class=&quot;absolute top-[-40vh]&quot;&gt;&lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;flex&quot;&gt;
+    &lt;div class=&quot;flex-1&quot;&gt;
+      {{ data.teamMember.fullName if data.teamMember else &quot;(unassigned)&quot; }}
+    &lt;/div&gt;
+    {% if timeSlotWarnings.hasWarning() %}
+      &lt;div class=&quot;relative hover:*:block&quot;&gt;
+        ⚠️
+        &lt;div class=&quot;p-1 z-1 absolute w-xs max-h-xs overflow-y-auto top-0 {% if (loop.index0 / row.length &lt; 0.5) %}left-0{% else %}right-0{% endif %} hidden bg-amber-50 border&quot;&gt;
+          &lt;ul&gt;
+            {% if timeSlotWarnings.isExternalAssignee %}
+              &lt;li&gt;This assignee is external.&lt;/li&gt;
+            {% endif %}
+            {% for conflict in timeSlotWarnings.bilocation %}
+              &lt;li&gt;This assignee is also sceduled at {{ timeSlotLink(conflict) }}.&lt;/li&gt;
+            {% endfor %}
+            {% if timeSlotWarnings.adultOnly %}
+              &lt;li&gt;This assignee is under-age.&lt;/li&gt;
+            {% endif %}
+            {% if timeSlotWarnings.shiftContextPreferenceViolation %}
+              &lt;li&gt;This assignee does not prefer this shift context.&lt;/li&gt;
+            {% endif %}
+            {% if timeSlotWarnings.availabilityViolation %}
+              &lt;li&gt;This assignee is unavailable at this time.&lt;/li&gt;
+            {% endif %}
+            {% if timeSlotWarnings.unassigned %}
+              &lt;li&gt;This time slot is unassigned.&lt;/li&gt;
+            {% endif %}
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+
+  {% if data.color %}
+    &lt;p class=&quot;mt-4 p-1 rounded&quot; style=&quot;background-color: #{{ data.color.hex }}; color: #{{ data.color.hexForeground }};&quot;&gt;
+      {{ data.note }}
+    &lt;/p&gt;
+  {% else %}
+    &lt;p class=&quot;mt-4 p-1 rounded&quot;&gt;
+      {{ data.note }}
+    &lt;/p&gt;
+  {% endif %}
+
+  &lt;div class=&quot;flex justify-center gap-4 mt-4&quot;&gt;
+    &lt;a href=&quot;/schedule/time-slot/{{ data.id }}/&quot; class=&quot;block p-1 border rounded&quot;&gt;Edit&lt;/a&gt;
+    &lt;a href=&quot;/schedule/time-slot/{{ data.id }}/delete/&quot; class=&quot;block p-1 border rounded&quot;&gt;Delete&lt;/a&gt;
+  &lt;/div&gt;
+{% endif %}</pre></code>
+            <figcaption>The schedule week editor view code that renders cell types relating to time slots</figcaption>
+        </figure>
+    </main>
+    <footer class="footer">
+        &copy; 2025 Luke Hamann
+    </footer>
+    <a href="#" class="back-to-top">&uparrow; Top</a>
+</body>
+</html>
